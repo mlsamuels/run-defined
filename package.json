@@ -9,11 +9,15 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.5",
+    "codemirror": "^6.0.2",
+    "cross-env": "^7.0.3",
+    "dockerode": "^4.0.10",
     "express": "^5.1.0",
-    "react-dom": "^19.1.0",
+    "fs": "^0.0.1-security",
     "react": "^19.1.0",
-    "vite-express": "*",
-    "cross-env": "^7.0.3"
+    "react-dom": "^19.1.0",
+    "vite-express": "*"
   },
   "devDependencies": {
     "@types/react": "^19.1.2",

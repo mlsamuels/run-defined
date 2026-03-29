@@ -6,6 +6,7 @@ function App() {
     const [resultText, setResultText] = useState("");
 
     const buttonPress = async () => {
+        setResultText("");
         try {
             const response = await fetch('/testsubmit', {
                 method: 'POST',
@@ -20,7 +21,8 @@ function App() {
             }
             const result = await response.json();
 
-            setResultText(result["run-result"])
+            setResultText(JSON.parse(result["run-result"]))
+            console.log(JSON.parse(result["run-result"]))
         } catch (err) {
             console.log(err);
         }
