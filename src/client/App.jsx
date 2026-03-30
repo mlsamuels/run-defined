@@ -22,7 +22,6 @@ function App() {
             const result = await response.json();
 
             setResultText(JSON.parse(result["run-result"]))
-            console.log(JSON.parse(result["run-result"]))
         } catch (err) {
             console.log(err);
         }
@@ -34,8 +33,9 @@ function App() {
             <h1>RunDefined</h1>
             <div className="card">
                 <div>
-                    <textarea cols={50} rows={30} onChange={(e) => {
+                    <textarea cols={50} rows={30} defaultValue={localStorage.getItem("code")} onChange={(e) => {
                         setText(e.target.value)
+                        localStorage.setItem("code", e.target.value)
                     }}/>
                 </div>
 
