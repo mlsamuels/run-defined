@@ -4,7 +4,6 @@ import editorComponent from "./editor-component.jsx"
 
 
 function App() {
-    const [text, setText] = useState("");
     const [resultText, setResultText] = useState("");
 
     const buttonPress = async () => {
@@ -14,7 +13,7 @@ function App() {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    "code": text
+                    "code": localStorage.getItem("code")
                 }),
             });
 
@@ -30,7 +29,6 @@ function App() {
 
     }
     const onChange = (newText) => {
-        setText(newText);
         localStorage.setItem("code", newText);
     }
 

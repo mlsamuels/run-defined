@@ -48,9 +48,8 @@ async function startContainer() {
     await container.wait();
 
     const logs = await container.logs({ stdout: true, stderr: true });
-    const outputString = logs.toString().trim().replace(/(?!\s)\p{Cc}/gu, "");;
+    const outputString = logs.toString().trim().replace(/(?!\s)\p{Cc}/gu, "");
 
-    console.log(outputString);
     return outputString;
 
   } catch (err) {
