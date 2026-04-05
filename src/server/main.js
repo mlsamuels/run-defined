@@ -20,7 +20,7 @@ app.post("/testsubmit", async (req, res) => {
     console.error('Error writing file:', err);
   }
 
-  //run python file and get output
+  //Run python file and get output
   const output=await startContainer("python", "pythonContainer", 8000,9000)
   res.send({"run-result":JSON.stringify(output)});
 });

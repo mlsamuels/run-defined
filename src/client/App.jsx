@@ -28,10 +28,11 @@ function App() {
         }
 
     }
+
+    //Callback function for code editor
     const onChange = (newText) => {
         localStorage.setItem("code", newText);
     }
-
 
     return (
         <div className="App">

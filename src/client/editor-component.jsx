@@ -5,13 +5,13 @@ export default function editorComponent(defaultText, onChange) {
     const containerRef = useRef(null);
 
     useEffect(() => {
-        // Only run if the element exists in the DOM
+        //Only run if the element exists in the DOM
         if (!containerRef.current) return;
 
-        // Call the external initialization function
+        //Call the external initialization function
         const view = createEditor(containerRef.current, defaultText, onChange);
 
-        // Prevent the "2 editors" bug
+        //Make sure there's only one editor
         return () => view.destroy();
     }, []);
 
