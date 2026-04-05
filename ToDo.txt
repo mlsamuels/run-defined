@@ -1,0 +1,6 @@
+ToDo for MVP:
+✅Run Python Code
+✅CodeMirror
+Simple MongoDB
+Simple ELO system
+Show results to user?
