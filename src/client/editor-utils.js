@@ -27,7 +27,12 @@ export function createEditor(target, initialDoc = "", onChange) {
     if (target.innerHTML !== "") target.innerHTML = "";
 
     let myTheme = EditorView.theme({
-        "&": { maxHeight: "300px" ,minWidth: "400px"},
+        "&": {
+            minWidth: "400px",
+            width: "fit-content",
+            margin: "0 auto"
+
+        },
         ".cm-scroller": { overflow: "auto" },
         ".cm-content, .cm-gutter": { minHeight: "150px" }
 
