@@ -1,5 +1,7 @@
 import {useState} from "react";
 import "./App.css";
+import editorComponent from "./editor-component.jsx"
+
 
 function App() {
     const [text, setText] = useState("");
@@ -27,19 +29,21 @@ function App() {
         }
 
     }
+    const onChange = (newText) => {
+        setText(newText);
+        localStorage.setItem("code", newText);
+    }
+
 
     return (
         <div className="App">
             <h1>RunDefined</h1>
             <div className="card">
-                <div>
-                    <textarea cols={50} rows={30} defaultValue={localStorage.getItem("code")} onChange={(e) => {
-                        setText(e.target.value)
-                        localStorage.setItem("code", e.target.value)
-                    }}/>
+                <div id="editor-div">
+                    {editorComponent(localStorage.getItem("code"), onChange)}
                 </div>
-
-                <button onClick={buttonPress}>
+                <br/>
+                <button className="button" onClick={buttonPress}>
                     Submit
                 </button>
                 <div>
@@ -50,5 +54,6 @@ function App() {
         </div>
     );
 }
+
 
 export default App;
