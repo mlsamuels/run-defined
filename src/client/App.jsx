@@ -4,10 +4,11 @@ import editorComponent from "./editor-component.jsx"
 
 
 function App() {
-    const [resultText, setResultText] = useState("");
+    const [outText, setOutText] = useState("");
+    const [errText, setErrText] = useState("");
 
     const buttonPress = async () => {
-        setResultText("");
+        setOutText("");
         try {
             const response = await fetch('/testsubmit', {
                 method: 'POST',
@@ -22,7 +23,8 @@ function App() {
             }
             const result = await response.json();
 
-            setResultText(JSON.parse(result["run-result"]))
+            setOutText(JSON.parse(result["stdout"]))
+            setErrText(JSON.parse(result["stderr"]))
         } catch (err) {
             console.log(err);
         }
@@ -46,8 +48,22 @@ function App() {
                     Submit
                 </button>
                 <div>
-                    {resultText}
+                    <h2>
+                        stdout:
+                    </h2>
+                    <pre >
+                        {outText}
+                    </pre>
                 </div>
+                <div>
+                    <h2>
+                        stderr:
+                    </h2>
+                    <pre >
+                        {errText}
+                    </pre>
+                </div>
+
 
             </div>
         </div>

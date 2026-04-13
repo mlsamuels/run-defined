@@ -21,7 +21,7 @@ app.post("/testsubmit", async (req, res) => {
 
   //Run python file and get output
   const output=await startContainer("python", "pythonContainer", 8000,9000)
-  res.send({"run-result":JSON.stringify(output)});
+  res.send({"stdout":JSON.stringify(output[0]), "stderr":JSON.stringify(output[1])});
 });
 
 
@@ -34,54 +34,58 @@ async function startContainer() {
     // Create container
     const container = await docker.createContainer({
       Image: 'python:3.12-slim',
-      Cmd: ['python','-u' ,'/app/script.py'],
+      Cmd: ['python','-u' ,'/app/main.py'],
       HostConfig: {
-        Binds: [`${process.cwd()}/python_scripts/script.py:/app/script.py`],
+        Binds: [`${process.cwd()}/python_scripts/script.py:/app/script.py`,
+                `${process.cwd()}/python_scripts/main.py:/app/main.py`],
         AutoRemove: false,
         Tty: true
       }
     });
 
+    //Get python code results
     await container.start();
     const result=await container.wait();
 
-    console.log(result["StatusCode"])
     const logs = await container.logs({
       stdout: true,
       stderr: true
     });
     await container.remove();
 
-    console.log(decodeDockerLogs(logs))
-    return decodeDockerLogs(logs);
+    let offset = 0;
+    let stdout = '';
+    let stderr = '';
+
+    //Parse buffer
+    while (offset < logs.length) {
+      // Docker header format:
+      // byte 0 = stream type (1=stdout, 2=stderr)
+      // bytes 1-3 = unused
+      // bytes 4-7 = length
+      const type = logs.readUInt8(offset)
+      const length = logs.readUInt32BE(offset + 4);
+
+      // extract payload safely
+      const start = offset + 8;
+      const end = start + length;
+
+      if (end > logs.length) break; // safety guard
+
+      const chunk = logs.slice(start, end);
+      if(type===1) {
+        stdout += chunk.toString();
+      }
+      else{
+        stderr += chunk.toString();
+      }
+
+      offset += 8 + length;
+    }
+
+    return [stdout,stderr];
 
   } catch (err) {
     console.error('Failed to start container:', err);
   }
-}
-function decodeDockerLogs(buffer) {
-  let offset = 0;
-  let output = '';
-
-  while (offset < buffer.length) {
-    // Docker header format:
-    // byte 0 = stream type (1=stdout, 2=stderr)
-    // bytes 1-3 = unused
-    // bytes 4-7 = length
-    const length = buffer.readUInt32BE(offset + 4);
-
-    // extract payload safely
-    const start = offset + 8;
-    const end = start + length;
-
-    if (end > buffer.length) break; // safety guard
-
-    const chunk = buffer.slice(start, end);
-
-    output += chunk.toString();
-
-    offset += 8 + length;
-  }
-
-  return output;
 }

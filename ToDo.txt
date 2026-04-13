@@ -2,7 +2,7 @@ ToDo:
 MVP:
 ✅Run Python Code
 ✅CodeMirror
-Separate python script to call user script
+✅Separate python script to call user script
 Simple MongoDB
 Simple ELO system
 Show results to user? (maybe just leaderboard for now)
