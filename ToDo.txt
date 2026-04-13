@@ -1,6 +1,17 @@
-ToDo for MVP:
+ToDo:
+MVP:
 ✅Run Python Code
 ✅CodeMirror
+Separate python script to call user script
 Simple MongoDB
 Simple ELO system
-Show results to user?
+Show results to user? (maybe just leaderboard for now)
+
+Beyond:
+User can test code
+Decide Pages
+Page navigation
+Site Design
+Canvas/animations (Use same base system for both [flipdots??])
+    -Ambient animations
+    -Animate games
