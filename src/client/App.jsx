@@ -1,6 +1,7 @@
 import {useState} from "react";
 import "./App.css";
 import editorComponent from "./editor-component.jsx"
+import runResultComponent from "./run-result-component.jsx"
 
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
 
     const buttonPress = async () => {
         setOutText("");
+        setErrText("");
         try {
             const response = await fetch('/testsubmit', {
                 method: 'POST',
@@ -47,22 +49,9 @@ function App() {
                 <button className="button" onClick={buttonPress}>
                     Submit
                 </button>
-                <div>
-                    <h2>
-                        stdout:
-                    </h2>
-                    <pre >
-                        {outText}
-                    </pre>
-                </div>
-                <div>
-                    <h2>
-                        stderr:
-                    </h2>
-                    <pre >
-                        {errText}
-                    </pre>
-                </div>
+                {runResultComponent(outText, "stdout", false)}
+                {runResultComponent(errText, "stderr", true)}
+
 
 
             </div>

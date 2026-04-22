@@ -45,7 +45,7 @@ async function startContainer() {
 
     //Get python code results
     await container.start();
-    const result=await container.wait();
+    await container.wait();
 
     const logs = await container.logs({
       stdout: true,
@@ -59,14 +59,13 @@ async function startContainer() {
 
     //Parse buffer
     while (offset < logs.length) {
-      // Docker header format:
       // byte 0 = stream type (1=stdout, 2=stderr)
       // bytes 1-3 = unused
       // bytes 4-7 = length
       const type = logs.readUInt8(offset)
       const length = logs.readUInt32BE(offset + 4);
 
-      // extract payload safely
+      //extract log
       const start = offset + 8;
       const end = start + length;
 
