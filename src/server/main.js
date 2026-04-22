@@ -4,7 +4,18 @@ import fs from "fs";
 import Docker from "dockerode";
 const docker = new Docker();
 
+import mongoose from "mongoose"
+import dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
+
+//Database connection
+await mongoose.connect(process.env.MONGODB_URI, {});
+const db = mongoose.connection;
+db.on("error", (err) => console.log(err));
+db.once("open", (open) => console.log("Connected to database"));
+const gameZeroSubmissions = db.collection("gameZeroSubmissions");
 
 app.use(express.json());
 
