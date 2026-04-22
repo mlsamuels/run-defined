@@ -7,7 +7,7 @@ export default function runResultComponent(text, title, isError) {
     }
 
     return(
-    <div style={isError ? {background:'pink', borderRadius:'10px',padding:'10px', paddingTop: '0px'} : {border: '1px solid black' , background:'white', borderRadius:'10px',padding:'10px', paddingTop: '0px'}}>
+    <div style={isError ? {background:'pink', borderRadius:'10px',padding:'10px', paddingTop: '0px' } : {border: '1px solid black' , background:'white', borderRadius:'10px',padding:'10px', paddingTop: '0px'}}>
         <h2>
             {title}:
         </h2>
