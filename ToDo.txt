@@ -3,8 +3,9 @@ MVP:
 ✅Run Python Code
 ✅CodeMirror
 ✅Separate python script to call user script
-Simple MongoDB
-Simple ELO system
+✅Simple MongoDB
+✅Simple ELO system
+Find player of close elo
 Show results to user? (maybe just leaderboard for now)
 
 Beyond:
