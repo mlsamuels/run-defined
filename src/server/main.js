@@ -45,6 +45,7 @@ app.post("/submitfunction", async (req, res) => {
   if(existing){
     req.ok =false;
     res.send({"error": "Name in use"});
+    return
   }
 
   //TODO Make sure code works before adding to database
@@ -64,6 +65,8 @@ ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000..."),
 );
 
+
+//plays a number of games with the submission of id, updates elo accordingly
 async function playGames(id, count){
 
   const opponents = await gameZeroSubmissions.find({ _id: { $ne: id } }).toArray()
@@ -77,6 +80,7 @@ async function playGames(id, count){
   }
 }
 
+//plays one game between id1 and id2, updates elo
 async function playGame(id1, id2){
   const p1=await gameZeroSubmissions.findOne({_id: id1})
   const p2=await gameZeroSubmissions.findOne({_id: id2})
