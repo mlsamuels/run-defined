@@ -6,6 +6,8 @@ const docker = new Docker();
 
 import mongoose from "mongoose"
 import dotenv from "dotenv";
+import {BiggerNumber} from "./games/bigger-number.js";
+
 dotenv.config();
 
 const app = express();
@@ -39,6 +41,7 @@ app.post("/submitfunction", async (req, res) => {
 
   const code = req.body.code;
   const name = req.body.name;
+  const prob = req.body.problem;
 
   //check if name in use
   const existing = await gameZeroSubmissions.findOne({name: name})
@@ -65,6 +68,7 @@ ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000..."),
 );
 
+const games=[BiggerNumber]
 
 //plays a number of games with the submission of id, updates elo accordingly
 async function playGames(id, count){
@@ -75,46 +79,55 @@ async function playGames(id, count){
 
   const final_opponents = opponents.sort(() => Math.random() - 0.5).slice(0,count)
   for (let i = 0; i < final_opponents.length; i++) {
-    const id2 = final_opponents[i]._id
-    await playGame(id,id2)
+    const id1 = final_opponents[i]._id
+    await playGame(id,id1)
   }
 }
 
 //plays one game between id1 and id2, updates elo
-async function playGame(id1, id2){
+async function playGame(id0, id1){
+  //Todo update with actual code
+  const prob = 0;
+
+
+  const p0=await gameZeroSubmissions.findOne({_id: id0})
   const p1=await gameZeroSubmissions.findOne({_id: id1})
-  const p2=await gameZeroSubmissions.findOne({_id: id2})
 
-  //TODO encapsulate this code
-  //write to script.py player 1
-  try {
-    fs.writeFileSync("python_scripts/script.py", p1.code); // Specify encoding
-  } catch (err) {
-    console.error('Error writing file:', err);
+  //make player functions
+  const  player0Function= async ()=>{
+    try {
+      fs.writeFileSync("python_scripts/script.py", p0.code); // Specify encoding
+    } catch (err) {
+      console.error('Error writing file:', err);
+    }
+
+    //Run python file and get output
+    const output0=await startContainer()
+    return output0[0].split(/\r?\n/).at(-2);
+  }
+  const  player1Function= async ()=>{
+    try {
+      fs.writeFileSync("python_scripts/script.py", p1.code); // Specify encoding
+    } catch (err) {
+      console.error('Error writing file:', err);
+    }
+
+    //Run python file and get output
+    const output1=await startContainer()
+    return output1[0].split(/\r?\n/).at(-2);
   }
 
-  //Run python file and get output
-  const output1=await startContainer()
-  const p1_score = parseInt(output1[0].split(/\r?\n/).at(-2));
+  const gameInstance = new games[prob]([player0Function,player1Function]);
+  await gameInstance.playAll()
 
-  //write to script.py player 2
-  try {
-    fs.writeFileSync("python_scripts/script.py", p2.code); // Specify encoding
-  } catch (err) {
-    console.error('Error writing file:', err);
-  }
-
-  //Run python file and get output
-  const output2=await startContainer()
-  const p2_score = parseInt(output2[0].split(/\r?\n/).at(-2));
 
   //compute elo change
-  const result = p1_score>p2_score?0:1;
-  const eloChange=eloUpdate(p1.elo,p2.elo,result);
+  const result = gameInstance.getResults()[1]
+  const eloChange=eloUpdate(p0.elo,p1.elo,result);
 
   //update elos
-  await gameZeroSubmissions.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*(1.0-result)-eloChange*result}})
-  await gameZeroSubmissions.updateOne({_id:id2},{$set:{elo:p2.elo+eloChange*result-eloChange*(1.0-result)}})
+  await gameZeroSubmissions.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
+  await gameZeroSubmissions.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
 }
 
 //Run python code and get results

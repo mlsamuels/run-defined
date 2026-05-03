@@ -5,6 +5,10 @@ MVP:
 ✅Separate python script to call user script
 ✅Simple MongoDB
 ✅Simple ELO system
+Generalize
+    Get Which Game Properly
+    Any number players
+    Fix Elo calculations
 Find player of close elo
 Show results to user? (maybe just leaderboard for now)
 

@@ -42,7 +42,8 @@ function App() {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     "code": localStorage.getItem("code"),
-                    "name": localStorage.getItem("name")
+                    "name": localStorage.getItem("name"),
+                    "problem": 0
                 }),
             });
 
