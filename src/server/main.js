@@ -21,6 +21,7 @@ const gameZeroSubmissions = db.collection("gameZeroSubmissions");
 
 app.use(express.json());
 
+//post for testing code
 app.post("/testfunction", async (req, res) => {
   res.ok=true;
   const code = req.body.code;
@@ -37,11 +38,12 @@ app.post("/testfunction", async (req, res) => {
   res.send({"stdout":JSON.stringify(output[0]), "stderr":JSON.stringify(output[1])});
 });
 
+//post for submitting code and adding to leaderboard
 app.post("/submitfunction", async (req, res) => {
 
   const code = req.body.code;
   const name = req.body.name;
-  const prob = req.body.problem;
+  const game = req.body.game;
 
   //check if name in use
   const existing = await gameZeroSubmissions.findOne({name: name})
@@ -54,10 +56,11 @@ app.post("/submitfunction", async (req, res) => {
   //TODO Make sure code works before adding to database
 
   //add to database
-  const insert_result = await gameZeroSubmissions.insertOne({name: name, code: code, elo: 1500})
+  const insert_result = await gameZeroSubmissions.insertOne({name: name, code: code, elo: 1500, game:game})
   const id = insert_result.insertedId;
 
   await playGames(id, 5)
+  await playRand(game, 5)
 
   res.ok=true;
 
@@ -72,26 +75,52 @@ const games=[BiggerNumber]
 
 //plays a number of games with the submission of id, updates elo accordingly
 async function playGames(id, count){
+  let p0 = await gameZeroSubmissions.findOne({_id: id})
 
-  const opponents = await gameZeroSubmissions.find({ _id: { $ne: id } }).toArray()
-  const real_count =opponents.length
-  count = Math.min(count,real_count)
+  for (let i = 0; i < count; i++) {
+    const searchResult= await gameZeroSubmissions.aggregate([
+      {
+        $addFields: {
+          diff: { $abs: { $subtract: ["$elo", p0.elo] } }
+        }
+      },
+      { $match: { _id: { $ne: id}, game: p0.game}},
+      { $sort: { diff: 1 } },
+      { $limit: 1 }
+    ]).toArray();
 
-  const final_opponents = opponents.sort(() => Math.random() - 0.5).slice(0,count)
-  for (let i = 0; i < final_opponents.length; i++) {
-    const id1 = final_opponents[i]._id
-    await playGame(id,id1)
+    if(searchResult.length ===0){
+      break
+    }
+    const p1= searchResult[0];
+    await playGame(p0,p1)
+    p0 = await gameZeroSubmissions.findOne({_id: id})
+  }
+}
+
+//plays a number of games between random opponents
+async function playRand(game, count){
+  const searchResult= await gameZeroSubmissions.aggregate([
+    { $match: {game: game}},
+    { $sample: { size: 2 } }
+  ]).toArray();
+  if(searchResult.length<2){
+    return;
+  }
+  await playGame(searchResult[0], searchResult[1]);
+
+  if(count>1){
+    await playRand(game, count-1);
   }
 }
 
 //plays one game between id1 and id2, updates elo
-async function playGame(id0, id1){
-  //Todo update with actual code
-  const prob = 0;
+async function playGame(p0, p1){
+  const game = p0.game;
 
+  const id0= p0._id;
+  const id1= p1._id;
 
-  const p0=await gameZeroSubmissions.findOne({_id: id0})
-  const p1=await gameZeroSubmissions.findOne({_id: id1})
 
   //make player functions
   const  player0Function= async ()=>{
@@ -117,7 +146,7 @@ async function playGame(id0, id1){
     return output1[0].split(/\r?\n/).at(-2);
   }
 
-  const gameInstance = new games[prob]([player0Function,player1Function]);
+  const gameInstance = new games[game]([player0Function,player1Function]);
   await gameInstance.playAll()
 
 
@@ -191,6 +220,7 @@ async function startContainer() {
   }
 }
 
+//Given two elos and the winner, update give elo change
 function eloUpdate(elo0, elo1, winner){
   const p0=(1.0/(1.0+10**((elo1-elo0)/400)))
   const p1=1.0-p0
