@@ -123,9 +123,10 @@ async function playGame(p0, p1){
 
 
   //make player functions
-  const  player0Function= async ()=>{
+  const  player0Function= async (args)=>{
     try {
-      fs.writeFileSync("python_scripts/script.py", p0.code); // Specify encoding
+      fs.writeFileSync("python_scripts/script.py", p0.code);
+      fs.writeFileSync("python_scripts/main.py", games[game].getCode());
     } catch (err) {
       console.error('Error writing file:', err);
     }
@@ -134,9 +135,10 @@ async function playGame(p0, p1){
     const output0=await startContainer()
     return output0[0].split(/\r?\n/).at(-2);
   }
-  const  player1Function= async ()=>{
+  const  player1Function= async (args)=>{
     try {
-      fs.writeFileSync("python_scripts/script.py", p1.code); // Specify encoding
+      fs.writeFileSync("python_scripts/script.py", p1.code);
+      fs.writeFileSync("python_scripts/main.py", games[game].getCode());
     } catch (err) {
       console.error('Error writing file:', err);
     }
