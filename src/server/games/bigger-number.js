@@ -23,7 +23,7 @@ export class BiggerNumber extends Game{
 
     async nextTurn(){
         if(this.turn < 2){
-            this.scores[this.turn] = Number(await this.players[this.turn]())
+            this.scores[this.turn] = Number(await this.players[this.turn]([]))
             this.turn++;
         }
     }
