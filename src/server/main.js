@@ -114,7 +114,7 @@ async function playRand(game, count){
   }
 }
 
-//plays one game between id1 and id2, updates elo
+//plays one game between p0 and p1, updates elo
 async function playGame(p0, p1){
   const game = p0.game;
 
@@ -123,30 +123,8 @@ async function playGame(p0, p1){
 
 
   //make player functions
-  const  player0Function= async (args)=>{
-    try {
-      fs.writeFileSync("python_scripts/script.py", p0.code);
-      fs.writeFileSync("python_scripts/main.py", games[game].getCode());
-    } catch (err) {
-      console.error('Error writing file:', err);
-    }
-
-    //Run python file and get output
-    const output0=await startContainer()
-    return output0[0].split(/\r?\n/).at(-2);
-  }
-  const  player1Function= async (args)=>{
-    try {
-      fs.writeFileSync("python_scripts/script.py", p1.code);
-      fs.writeFileSync("python_scripts/main.py", games[game].getCode());
-    } catch (err) {
-      console.error('Error writing file:', err);
-    }
-
-    //Run python file and get output
-    const output1=await startContainer()
-    return output1[0].split(/\r?\n/).at(-2);
-  }
+  const  player0Function=makePlayerFunction(p0.code, games[game].getCode())
+  const  player1Function=makePlayerFunction(p1.code, games[game].getCode())
 
   const gameInstance = new games[game]([player0Function,player1Function]);
   await gameInstance.playAll()
@@ -159,6 +137,22 @@ async function playGame(p0, p1){
   //update elos
   await gameZeroSubmissions.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
   await gameZeroSubmissions.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
+}
+
+//Produces a player function that represents "what a player does" given a situation
+function makePlayerFunction(playerCode, gameCode){
+  return async (args)=>{
+    try {
+      fs.writeFileSync("python_scripts/script.py", playerCode);
+      fs.writeFileSync("python_scripts/main.py", gameCode);
+    } catch (err) {
+      console.error('Error writing file:', err);
+    }
+
+    //Run python file and get output
+    const output0=await startContainer()
+    return output0[0].split(/\r?\n/).at(-2);
+  }
 }
 
 //Run python code and get results
