@@ -12,6 +12,7 @@ dotenv.config();
 
 const app = express();
 
+
 //Database connection
 await mongoose.connect(process.env.MONGODB_URI, {});
 const db = mongoose.connection;
@@ -71,6 +72,7 @@ ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000..."),
 );
 
+//List of all games, index represents which number game it is
 const games=[BiggerNumber]
 
 //plays a number of games with the submission of id, updates elo accordingly
@@ -118,6 +120,7 @@ async function playRand(game, count){
 async function playGame(p0, p1){
   const game = p0.game;
 
+  //Todo more than 2 players
   const id0= p0._id;
   const id1= p1._id;
 
@@ -142,9 +145,11 @@ async function playGame(p0, p1){
 //Produces a player function that represents "what a player does" given a situation
 function makePlayerFunction(playerCode, gameCode){
   return async (args)=>{
+    const gameCodeArgs = stringReplace(gameCode, args)
+
     try {
       fs.writeFileSync("python_scripts/script.py", playerCode);
-      fs.writeFileSync("python_scripts/main.py", gameCode);
+      fs.writeFileSync("python_scripts/main.py", gameCodeArgs);
     } catch (err) {
       console.error('Error writing file:', err);
     }
@@ -153,6 +158,15 @@ function makePlayerFunction(playerCode, gameCode){
     const output0=await startContainer()
     return output0[0].split(/\r?\n/).at(-2);
   }
+}
+
+//Replaces instances of {1}, {2} ... in a string with elements of replacements
+function stringReplace(string, replacements){
+  for (let i= 0; i< replacements.length; i++){
+    const regex= new RegExp("\\{"+i+"\\}");
+    string = string.replace(regex, replacements[i]);
+  }
+  return string;
 }
 
 //Run python code and get results
@@ -216,7 +230,7 @@ async function startContainer() {
   }
 }
 
-//Given two elos and the winner, update give elo change
+//Given two elos and the winner, give elo change
 function eloUpdate(elo0, elo1, winner){
   const p0=(1.0/(1.0+10**((elo1-elo0)/400)))
   const p1=1.0-p0

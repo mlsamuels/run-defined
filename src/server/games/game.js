@@ -38,5 +38,9 @@ export class Game {
     static getCode(){
         throw new Error("Method 'getCode()' must be implemented.");
     }
+
+    static getInfo(){
+        throw new Error("Method 'getInfo()' must be implemented.");
+    }
 }
 

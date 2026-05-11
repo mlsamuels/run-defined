@@ -1,6 +1,5 @@
 import {Game} from "./game.js";
 
-
 //Game Class for "Think of a bigger number" game
 export class BiggerNumber extends Game{
     constructor(players) {
@@ -40,8 +39,19 @@ export class BiggerNumber extends Game{
         return pythonCode;
     }
 
+    static getInfo(){
+        return {"name":"Bigger Number",
+                "description":"In this game, two agents will try and think of a bigger number. Return the bigger number to win.",
+                "defaultCode": defaultCode}
+    }
+
 }
 
 const pythonCode= `import script
 result = script.function()
 print(result)`
+
+const defaultCode= `
+def function():
+  return 0
+`

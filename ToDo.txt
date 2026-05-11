@@ -8,8 +8,9 @@ MVP:
 Generalize
     ✅ Get Which Game Properly
     Any number players
-    Abstract function creation
-    Get main.py from game file
+    ✅ Abstract function creation
+    ✅ Get main.py from game file
+    ✅ Add arguments to main.py
 ✅ Find player of close elo
 Show results to user? (maybe just leaderboard for now)
 
