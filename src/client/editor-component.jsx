@@ -13,7 +13,7 @@ export default function editorComponent(defaultText, onChange) {
 
         //Make sure there's only one editor
         return () => view.destroy();
-    }, []);
+    }, [defaultText]);
 
     return <div ref={containerRef} />;
 }

@@ -7,6 +7,7 @@ const docker = new Docker();
 import mongoose from "mongoose"
 import dotenv from "dotenv";
 import {BiggerNumber} from "./games/bigger-number.js";
+import {TwentyOne} from "./games/twenty-one.js";
 
 dotenv.config();
 
@@ -21,6 +22,19 @@ const gameZeroSubmissions = db.collection("gameZeroSubmissions");
 
 
 app.use(express.json());
+
+//get the info for a specific game to display instructions
+app.get("/gameinfo/:game", (req, res) => {
+  const game = req.params.game;
+  if(game<games.length){
+    req.ok=true;
+    res.send(games[game].getInfo())
+  }
+  else{
+    req.ok=false;
+    res.send({"error": "Game not found"});
+  }
+});
 
 //post for testing code
 app.post("/testfunction", async (req, res) => {
@@ -73,13 +87,14 @@ ViteExpress.listen(app, 3000, () =>
 );
 
 //List of all games, index represents which number game it is
-const games=[BiggerNumber]
+const games=[BiggerNumber, TwentyOne]
 
 //plays a number of games with the submission of id, updates elo accordingly
 async function playGames(id, count){
   let p0 = await gameZeroSubmissions.findOne({_id: id})
 
   for (let i = 0; i < count; i++) {
+    console.log("Game: "+i)
     const searchResult= await gameZeroSubmissions.aggregate([
       {
         $addFields: {
@@ -90,7 +105,6 @@ async function playGames(id, count){
       { $sort: { diff: 1 } },
       { $limit: 1 }
     ]).toArray();
-
     if(searchResult.length ===0){
       break
     }
@@ -160,7 +174,7 @@ function makePlayerFunction(playerCode, gameCode){
   }
 }
 
-//Replaces instances of {1}, {2} ... in a string with elements of replacements
+//Replaces instances of {0}, {1} ... in a string with elements of replacements
 function stringReplace(string, replacements){
   for (let i= 0; i< replacements.length; i++){
     const regex= new RegExp("\\{"+i+"\\}");
