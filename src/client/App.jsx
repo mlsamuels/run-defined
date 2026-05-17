@@ -5,14 +5,21 @@ import runResultComponent from "./run-result-component.jsx"
 
 
 function App() {
+    //Text for the stdout section
     const [outText, setOutText] = useState("");
+    //Text for the stderr section
     const [errText, setErrText] = useState("");
 
-    const [gameName, setGameName] = useState("");
+    //Users chosen game number
     const [gameNum, setGameNum] = useState(0);
+    //Text for the name of the current game
+    const [gameName, setGameName] = useState("");
+    //Text for the description of the current game
     const [descriptionText, setDescriptionText] = useState("");
 
+    //The default code in the code editor, this acts as a way of modifying the code that is there
     const [defaultCode, setDefaultCode] = useState("");
+    //The actual code that has been typed in the editor, this is up to date and default code is not
     const realCode = useRef({code: ""});
 
 
@@ -21,6 +28,7 @@ function App() {
         changeGame(0)
     }, []);
 
+    //Pressing the test button
     const testPress = async () => {
         setOutText("");
         setErrText("");
@@ -46,6 +54,7 @@ function App() {
 
     }
 
+    //Pressing the submit button
     const submitPress = async () => {
         setOutText("");
         setErrText("");
@@ -75,6 +84,7 @@ function App() {
 
     }
 
+    //Switching the gameNum to a different game, gets information and updates code editor
     const changeGame = async (num) => {
         setGameNum(Number(num))
         try {
@@ -99,9 +109,8 @@ function App() {
         }
     }
 
-
     //Callback function for code editor
-    const onChange = (newText) => {
+    const onCodeChange = (newText) => {
         realCode.current.code=newText;
     }
 
@@ -119,6 +128,7 @@ function App() {
                         {gameName}
                     </h3>
                 </div>
+
                 <div>
                     <h2>Description:</h2>
                     <h3>
@@ -132,12 +142,14 @@ function App() {
                         <input onChange={(event)=>{localStorage.setItem("name", event.target.value)}} />
                     </div>
                 </div>
+
                 <div>
                     <h2>Code:</h2>
                     <div id="editor-div">
-                        {editorComponent(defaultCode, onChange)}
+                        {editorComponent(defaultCode, onCodeChange)}
                     </div>
                 </div>
+
                 <br/>
                 <button className="button" onClick={testPress}>
                     Test
@@ -147,9 +159,6 @@ function App() {
                 </button>
                 {runResultComponent(outText, "stdout", false)}
                 {runResultComponent(errText, "stderr", true)}
-
-
-
             </div>
         </div>
     );

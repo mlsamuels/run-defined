@@ -94,7 +94,6 @@ async function playGames(id, count){
   let p0 = await gameZeroSubmissions.findOne({_id: id})
 
   for (let i = 0; i < count; i++) {
-    console.log("Game: "+i)
     const searchResult= await gameZeroSubmissions.aggregate([
       {
         $addFields: {
@@ -157,6 +156,7 @@ async function playGame(p0, p1){
 }
 
 //Produces a player function that represents "what a player does" given a situation
+//This function will be given to the game so it can play out
 function makePlayerFunction(playerCode, gameCode){
   return async (args)=>{
     const gameCodeArgs = stringReplace(gameCode, args)
@@ -174,7 +174,7 @@ function makePlayerFunction(playerCode, gameCode){
   }
 }
 
-//Replaces instances of {0}, {1} ... in a string with elements of replacements
+//Replaces instances of {0}, {1} ... in a string with the elements of replacements
 function stringReplace(string, replacements){
   for (let i= 0; i< replacements.length; i++){
     const regex= new RegExp("\\{"+i+"\\}");
@@ -184,6 +184,7 @@ function stringReplace(string, replacements){
 }
 
 //Run python code and get results
+//Uses whatever code is in main.py and script.py
 async function startContainer() {
   try {
     // Create container
