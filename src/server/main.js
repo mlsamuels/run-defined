@@ -40,17 +40,31 @@ app.get("/gameinfo/:game", (req, res) => {
 app.post("/testfunction", async (req, res) => {
   res.ok=true;
   const code = req.body.code;
+  const tests = req.body.tests;
+  const game = req.body.game;
 
   //write to script.py
-  try {
-    fs.writeFileSync("python_scripts/script.py", code); // Specify encoding
-  } catch (err) {
-    console.error('Error writing file:', err);
+
+
+  //const player = makePlayerFunction(code, games[game].getCode())
+
+  const testResults=[]
+  for(let i =0; i<tests.length;i++){
+    const t = tests[i];
+
+    const gameCodeArgs = stringReplace(games[game].getCode(), t)
+    try {
+      fs.writeFileSync("python_scripts/script.py", code);
+      fs.writeFileSync("python_scripts/main.py", gameCodeArgs);
+    } catch (err) {
+      console.error('Error writing file:', err);
+    }
+
+    const result=await startContainer()
+    testResults.push(result)
   }
 
-  //Run python file and get output
-  const output=await startContainer()
-  res.send({"stdout":JSON.stringify(output[0]), "stderr":JSON.stringify(output[1])});
+  res.send({"data":JSON.stringify(testResults)});
 });
 
 //post for submitting code and adding to leaderboard

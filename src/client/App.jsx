@@ -22,6 +22,9 @@ function App() {
     //The actual code that has been typed in the editor, this is up to date and default code is not
     const realCode = useRef({code: ""});
 
+    //Test Cases
+    const [testCases, setTestCases] = useState([]);
+
 
     //initialization code
     useEffect( () => {
@@ -37,7 +40,9 @@ function App() {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    "code": realCode.current.code
+                    "code": realCode.current.code,
+                    "tests": testCases,
+                    "game": gameNum
                 }),
             });
 
@@ -46,8 +51,9 @@ function App() {
             }
             const result = await response.json();
 
-            setOutText(JSON.parse(result["stdout"]))
-            setErrText(JSON.parse(result["stderr"]))
+            console.log(result)
+            setOutText(JSON.parse(result["data"])[0][0])
+            setErrText(JSON.parse(result["data"])[0][1])
         } catch (err) {
             console.log(err);
         }
@@ -99,9 +105,11 @@ function App() {
             }
             const result = await response.json();
 
+            console.log(result)
+
+            setTestCases(result.defaultTests)
             setDefaultCode(result.defaultCode)
             realCode.current.code=result.defaultCode
-            console.log("real Code: "+realCode.current.code)
             setGameName(result.name);
             setDescriptionText(result.description);
         } catch (err) {
@@ -112,6 +120,17 @@ function App() {
     //Callback function for code editor
     const onCodeChange = (newText) => {
         realCode.current.code=newText;
+    }
+
+    const testCaseDisplay=(attempt)=>{
+        let result=""
+        testCases.forEach((testCase) => {
+            testCase.forEach((arg)=>{
+                result+=arg+" "
+            })
+            result+="|"
+        })
+        return result
     }
 
     return (
@@ -157,6 +176,11 @@ function App() {
                 <button className="button" onClick={submitPress}>
                     Submit
                 </button>
+
+                <div>
+                    {testCaseDisplay(testCases)}
+                </div>
+
                 {runResultComponent(outText, "stdout", false)}
                 {runResultComponent(errText, "stderr", true)}
             </div>

@@ -43,7 +43,7 @@ export class BiggerNumber extends Game{
         return {"name":"Bigger Number",
                 "description":"In this game, two agents will try and think of a bigger number. Return the bigger number to win.",
                 "defaultCode": defaultCode,
-                "defaultTests": "Placeholder"}
+                "defaultTests": [[]]}
     }
 
 }

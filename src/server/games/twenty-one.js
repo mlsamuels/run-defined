@@ -46,7 +46,7 @@ export class TwentyOne extends Game{
         return {"name":"Twenty One Game",
             "description":"In this game, two agents will take turns taking 1, 2, or 3 sticks, whoever takes the final stick wins.",
             "defaultCode": defaultCode,
-            "defaultTests": "Placeholder"}
+            "defaultTests": [["21"],["1"],["2"]]}
     }
 
 }
