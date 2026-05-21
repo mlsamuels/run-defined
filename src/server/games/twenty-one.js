@@ -31,7 +31,14 @@ export class TwentyOne extends Game{
     }
 
     viewGame(){
-        throw new Error("Method 'viewGame()' must be implemented.");
+        const board= new Array(45).fill(null).map(() => new Array(45).fill("0"));
+
+        for(let i = 0;i<this.numbers.at(-1);i++){
+            for(let j =1; j < 44;j++){
+                board[j+1][2*i+2]="1"
+            }
+        }
+        return board;
     }
 
     static numPlayers(){

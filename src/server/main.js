@@ -91,9 +91,11 @@ app.post("/submitfunction", async (req, res) => {
   await playGames(id, 5)
   await playRand(game, 5)
 
+  const leaderBoard = await getLeaderBoard(game)
+
   res.ok=true;
 
-  res.send({});
+  res.send({"leaderBoard":JSON.stringify(leaderBoard)});
 });
 
 ViteExpress.listen(app, 3000, () =>
@@ -102,6 +104,19 @@ ViteExpress.listen(app, 3000, () =>
 
 //List of all games, index represents which number game it is
 const games=[BiggerNumber, TwentyOne]
+
+async function getLeaderBoard(game){
+  const leaderBoard = await gameZeroSubmissions.aggregate([
+    { $match: { game: game}},
+    { $sort: { elo: -1 } },
+    {$project: {
+        _id: 0,
+        name: 1,
+        elo: 1
+      }}
+  ])
+  return leaderBoard.toArray();
+}
 
 //plays a number of games with the submission of id, updates elo accordingly
 async function playGames(id, count){
@@ -126,6 +141,8 @@ async function playGames(id, count){
     p0 = await gameZeroSubmissions.findOne({_id: id})
   }
 }
+
+
 
 //plays a number of games between random opponents
 async function playRand(game, count){

@@ -13,11 +13,16 @@ Generalize
     ✅ Add arguments to main.py
 ✅ Find player of close elo
 Show results to user? (maybe just leaderboard for now)
+    Leaderboard
+    Game results
 
 Beyond:
 ✅Get game information
 ✅More Games
 User can test code
+    Edit test cases
+    Display all test results
+
 Decide Pages
 Page navigation
 Site Design
