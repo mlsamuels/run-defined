@@ -117,6 +117,7 @@ function App() {
             realCode.current.code=result.defaultCode
             setGameName(result.name);
             setDescriptionText(result.description);
+            setLeaderBoardData("")
         } catch (err) {
             console.log(err);
         }
