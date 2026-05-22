@@ -25,6 +25,9 @@ function App() {
     //Test Cases
     const [testCases, setTestCases] = useState([]);
 
+    //LeaderBoard
+    const [leaderBoardData, setLeaderBoardData] = useState("");
+
 
     //initialization code
     useEffect( () => {
@@ -66,6 +69,8 @@ function App() {
         setErrText("");
         console.log("Submission Real Code: "+realCode.current.code)
         try {
+            setLeaderBoardData("Waiting for Leader Board...");
+
             const response = await fetch('/submitfunction', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -82,8 +87,8 @@ function App() {
             }
             const result = await response.json();
 
-            setOutText(JSON.parse(result["stdout"]))
-            setErrText(JSON.parse(result["stderr"]))
+            const leaderBoard = result["leaderBoard"];
+            setLeaderBoardData(leaderBoard)
         } catch (err) {
             console.log(err);
         }
@@ -122,7 +127,7 @@ function App() {
         realCode.current.code=newText;
     }
 
-    const testCaseDisplay=(attempt)=>{
+    const testCaseDisplay=()=>{
         let result=""
         testCases.forEach((testCase) => {
             testCase.forEach((arg)=>{
@@ -178,11 +183,15 @@ function App() {
                 </button>
 
                 <div>
-                    {testCaseDisplay(testCases)}
+                    {testCaseDisplay()}
                 </div>
 
                 {runResultComponent(outText, "stdout", false)}
                 {runResultComponent(errText, "stderr", true)}
+
+                <div>
+                    {leaderBoardData}
+                </div>
             </div>
         </div>
     );

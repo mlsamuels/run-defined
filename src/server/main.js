@@ -74,6 +74,7 @@ app.post("/submitfunction", async (req, res) => {
   const name = req.body.name;
   const game = req.body.game;
 
+
   //check if name in use
   const existing = await gameZeroSubmissions.findOne({name: name})
   if(existing){
@@ -94,7 +95,7 @@ app.post("/submitfunction", async (req, res) => {
   const leaderBoard = await getLeaderBoard(game)
 
   res.ok=true;
-
+  console.log(leaderBoard)
   res.send({"leaderBoard":JSON.stringify(leaderBoard)});
 });
 
