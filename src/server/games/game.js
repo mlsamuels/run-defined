@@ -1,6 +1,6 @@
 export class Game {
     players;
-
+    visualization=[];
     constructor(players){
         if(this.constructor === Game) {
             throw new Error("Abstract classes cannot be instantiated.");
@@ -10,9 +10,12 @@ export class Game {
 
     //Don't override this one
     async playAll(){
+        this.visualization.push(this.viewGame())
         while(!this.isEnded()){
             await this.nextTurn()
+            this.visualization.push(this.viewGame())
         }
+        return this.visualization;
     }
 
     isEnded(){
