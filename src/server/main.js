@@ -89,14 +89,13 @@ app.post("/submitfunction", async (req, res) => {
   const insert_result = await gameZeroSubmissions.insertOne({name: name, code: code, elo: 1500, game:game})
   const id = insert_result.insertedId;
 
-  await playGames(id, 5)
+  const viss=await playGames(id, 5)
   await playRand(game, 5)
 
   const leaderBoard = await getLeaderBoard(game)
-
+  console.log(viss)
   res.ok=true;
-  console.log(leaderBoard)
-  res.send({"leaderBoard":JSON.stringify(leaderBoard)});
+  res.send({"leaderBoard":JSON.stringify(leaderBoard), "viss": JSON.stringify(viss)});
 });
 
 ViteExpress.listen(app, 3000, () =>
@@ -122,7 +121,7 @@ async function getLeaderBoard(game){
 //plays a number of games with the submission of id, updates elo accordingly
 async function playGames(id, count){
   let p0 = await gameZeroSubmissions.findOne({_id: id})
-
+  const viss=[]
   for (let i = 0; i < count; i++) {
     const searchResult= await gameZeroSubmissions.aggregate([
       {
@@ -138,9 +137,10 @@ async function playGames(id, count){
       break
     }
     const p1= searchResult[0];
-    await playGame(p0,p1)
+    viss.push(await playGame(p0,p1))
     p0 = await gameZeroSubmissions.findOne({_id: id})
   }
+  return viss
 }
 
 
@@ -175,7 +175,7 @@ async function playGame(p0, p1){
   const  player1Function=makePlayerFunction(p1.code, games[game].getCode())
 
   const gameInstance = new games[game]([player0Function,player1Function]);
-  await gameInstance.playAll()
+  const vis = await gameInstance.playAll()
 
 
   //compute elo change
@@ -185,6 +185,8 @@ async function playGame(p0, p1){
   //update elos
   await gameZeroSubmissions.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
   await gameZeroSubmissions.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
+  return vis;
+
 }
 
 //Produces a player function that represents "what a player does" given a situation

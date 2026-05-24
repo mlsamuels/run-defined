@@ -28,6 +28,7 @@ function App() {
     //LeaderBoard
     const [leaderBoardData, setLeaderBoardData] = useState("");
 
+    const [visualization, setVisualization] =  useState("")
 
     //initialization code
     useEffect( () => {
@@ -89,6 +90,7 @@ function App() {
 
             const leaderBoard = result["leaderBoard"];
             setLeaderBoardData(leaderBoard)
+            setVisualization(result["viss"])
         } catch (err) {
             console.log(err);
         }
@@ -192,6 +194,10 @@ function App() {
 
                 <div>
                     {leaderBoardData}
+                </div>
+
+                <div>
+                    {visualization}
                 </div>
             </div>
         </div>
