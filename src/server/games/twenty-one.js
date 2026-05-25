@@ -23,11 +23,17 @@ export class TwentyOne extends Game{
     async nextTurn(){
         const curNumber = this.numbers.at(-1);
         const curPlayer = this.players[(this.numbers.length+1)%2];
-        const choice = Number(await curPlayer([""+curNumber]));
-        if(choice>3 || choice<1 || choice>curNumber){
-            throw new Error("Invalid choice")
+        const result = await curPlayer([""+curNumber])
+        const choice = Number(result);
+
+        //error or invalid choice, other player wins
+        if(result===null || choice>3 || choice<1 || choice>curNumber){
+            this.numbers.push(1)
+            this.numbers.push(0)
         }
-        this.numbers.push(curNumber-choice)
+        else {
+            this.numbers.push(curNumber - choice)
+        }
     }
 
     viewGame(){

@@ -76,7 +76,7 @@ app.post("/submitfunction", async (req, res) => {
 
 
   //check if name in use
-  const existing = await gameZeroSubmissions.findOne({name: name})
+  const existing = await gameZeroSubmissions.findOne({name: name, game:game})
   if(existing){
     req.ok =false;
     res.send({"error": "Name in use"});
@@ -205,6 +205,13 @@ function makePlayerFunction(playerCode, gameCode){
 
     //Run python file and get output
     const output0=await startContainer()
+    console.log("made it to output")
+
+    //Error in run
+    if(output0[1].length>0){
+      return null
+    }
+
     return output0[0].split(/\r?\n/).at(-2);
   }
 }

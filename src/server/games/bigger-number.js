@@ -22,7 +22,13 @@ export class BiggerNumber extends Game{
 
     async nextTurn(){
         if(this.turn < 2){
-            this.scores[this.turn] = Number(await this.players[this.turn]([]));
+            const runResult = await this.players[this.turn]([])
+            if(runResult === null){
+                this.scores[this.turn]=0;
+            }
+            else {
+                this.scores[this.turn] = Number(runResult);
+            }
             this.turn++;
         }
     }
