@@ -185,7 +185,8 @@ async function playGame(p0, p1){
   //update elos
   await gameZeroSubmissions.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
   await gameZeroSubmissions.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
-  return vis;
+
+  return [vis,p0.name,p1.name,result];
 
 }
 

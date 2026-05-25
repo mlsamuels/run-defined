@@ -12,9 +12,9 @@ Generalize
     ✅ Get main.py from game file
     ✅ Add arguments to main.py
 ✅ Find player of close elo
-Show results to user? (maybe just leaderboard for now)
+✅Show results to user? (maybe just leaderboard for now)
     ✅Leaderboard
-    Game results
+    ✅Game results
 Account for errors in code
     Before adding to database
     During Game run

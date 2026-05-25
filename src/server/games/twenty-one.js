@@ -35,7 +35,7 @@ export class TwentyOne extends Game{
 
         for(let i = 0;i<this.numbers.at(-1);i++){
             for(let j =1; j < 44;j++){
-                board[j+1][2*i+2]="1"
+                board[j][2*i+2]="1"
             }
         }
         return board;
