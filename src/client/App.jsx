@@ -90,7 +90,7 @@ function App() {
 
             const leaderBoard = result["leaderBoard"];
             setLeaderBoardData(leaderBoard)
-            setVisualization(result["viss"])
+            setVisualization(result["visualizations"])
         } catch (err) {
             console.log(err);
         }

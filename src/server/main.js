@@ -43,24 +43,12 @@ app.post("/testfunction", async (req, res) => {
   const tests = req.body.tests;
   const game = req.body.game;
 
-  //write to script.py
-
-
-  //const player = makePlayerFunction(code, games[game].getCode())
 
   const testResults=[]
   for(let i =0; i<tests.length;i++){
     const t = tests[i];
 
-    const gameCodeArgs = stringReplace(games[game].getCode(), t)
-    try {
-      fs.writeFileSync("python_scripts/script.py", code);
-      fs.writeFileSync("python_scripts/main.py", gameCodeArgs);
-    } catch (err) {
-      console.error('Error writing file:', err);
-    }
-
-    const result=await startContainer()
+    const result= await runCode(code, games[game].getCode(), t)
     testResults.push(result)
   }
 
@@ -89,13 +77,12 @@ app.post("/submitfunction", async (req, res) => {
   const insert_result = await gameZeroSubmissions.insertOne({name: name, code: code, elo: 1500, game:game})
   const id = insert_result.insertedId;
 
-  const viss=await playGames(id, 5)
+  const visualizations=await playGames(id, 5)
   await playRand(game, 5)
 
   const leaderBoard = await getLeaderBoard(game)
-  console.log(viss)
   res.ok=true;
-  res.send({"leaderBoard":JSON.stringify(leaderBoard), "viss": JSON.stringify(viss)});
+  res.send({"leaderBoard":JSON.stringify(leaderBoard), "visualizations": JSON.stringify(visualizations)});
 });
 
 ViteExpress.listen(app, 3000, () =>
@@ -105,6 +92,7 @@ ViteExpress.listen(app, 3000, () =>
 //List of all games, index represents which number game it is
 const games=[BiggerNumber, TwentyOne]
 
+//Returns the full ordered leaderboard for a given game (Name, elo)
 async function getLeaderBoard(game){
   const leaderBoard = await gameZeroSubmissions.aggregate([
     { $match: { game: game}},
@@ -121,8 +109,9 @@ async function getLeaderBoard(game){
 //plays a number of games with the submission of id, updates elo accordingly
 async function playGames(id, count){
   let p0 = await gameZeroSubmissions.findOne({_id: id})
-  const viss=[]
+  const visualizations=[]
   for (let i = 0; i < count; i++) {
+    //Find matches nearby
     const searchResult= await gameZeroSubmissions.aggregate([
       {
         $addFields: {
@@ -133,17 +122,16 @@ async function playGames(id, count){
       { $sort: { diff: 1 } },
       { $limit: 1 }
     ]).toArray();
-    if(searchResult.length ===0){
+    if(searchResult.length === 0){
       break
     }
+    //Closest match
     const p1= searchResult[0];
-    viss.push(await playGame(p0,p1))
+    visualizations.push(await playGame(p0,p1))
     p0 = await gameZeroSubmissions.findOne({_id: id})
   }
-  return viss
+  return visualizations;
 }
-
-
 
 //plays a number of games between random opponents
 async function playRand(game, count){
@@ -175,7 +163,7 @@ async function playGame(p0, p1){
   const  player1Function=makePlayerFunction(p1.code, games[game].getCode())
 
   const gameInstance = new games[game]([player0Function,player1Function]);
-  const vis = await gameInstance.playAll()
+  const visualization = await gameInstance.playAll()
 
 
   //compute elo change
@@ -186,7 +174,7 @@ async function playGame(p0, p1){
   await gameZeroSubmissions.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
   await gameZeroSubmissions.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
 
-  return [vis,p0.name,p1.name,result];
+  return [visualization,p0.name,p1.name,result];
 
 }
 
@@ -194,26 +182,29 @@ async function playGame(p0, p1){
 //This function will be given to the game so it can play out
 function makePlayerFunction(playerCode, gameCode){
   return async (args)=>{
-    const gameCodeArgs = stringReplace(gameCode, args)
-
-    try {
-      fs.writeFileSync("python_scripts/script.py", playerCode);
-      fs.writeFileSync("python_scripts/main.py", gameCodeArgs);
-    } catch (err) {
-      console.error('Error writing file:', err);
-    }
 
     //Run python file and get output
-    const output0=await startContainer()
-    console.log("made it to output")
+    const output= await runCode(playerCode, gameCode, args)
 
     //Error in run
-    if(output0[1].length>0){
+    if(output[1].length>0){
       return null
     }
 
-    return output0[0].split(/\r?\n/).at(-2);
+    return output[0].split(/\r?\n/).at(-2);
   }
+}
+
+//Replaces maincode with replacements and runs code, returning results
+async function runCode(scriptCode, mainCode,replacements){
+  const mainCodeArgs = stringReplace(mainCode, replacements)
+  try {
+    fs.writeFileSync("python_scripts/script.py", scriptCode);
+    fs.writeFileSync("python_scripts/main.py", mainCodeArgs);
+  } catch (err) {
+    console.error('Error writing file:', err);
+  }
+  return await startContainer()
 }
 
 //Replaces instances of {0}, {1} ... in a string with the elements of replacements

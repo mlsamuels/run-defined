@@ -1,3 +1,3 @@
 import script
-result = script.function(3)
+result = script.function()
 print(result)
