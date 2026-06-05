@@ -128,6 +128,7 @@ async function playGames(id, count){
     //Closest match
     const p1= searchResult[0];
     visualizations.push(await playGame(p0,p1))
+    console.log(p0.name+" vs. "+p1.name)
     p0 = await gameZeroSubmissions.findOne({_id: id})
   }
   return visualizations;

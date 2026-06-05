@@ -2,6 +2,7 @@ import {useState, useEffect, useRef} from "react";
 import "./App.css";
 import editorComponent from "./editor-component.jsx"
 import runResultComponent from "./run-result-component.jsx"
+import dotComponent from "./dot-component.jsx";
 
 
 function App() {
@@ -30,10 +31,14 @@ function App() {
 
     const [visualization, setVisualization] =  useState("")
 
+    const [color, setColor]=useState("#000000")
+
     //initialization code
     useEffect( () => {
         changeGame(0)
+
     }, []);
+
 
     //Pressing the test button
     const testPress = async () => {
@@ -71,7 +76,7 @@ function App() {
         console.log("Submission Real Code: "+realCode.current.code)
         try {
             setLeaderBoardData("Waiting for Leader Board...");
-
+            setVisualization("");
             const response = await fetch('/submitfunction', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -142,7 +147,16 @@ function App() {
     }
 
     return (
+
         <div className="App">
+            <div>
+                <canvas id="canvas" width="2000" height="2000">
+                </canvas>
+            </div>
+            {dotComponent(100,100,color,document.getElementById("canvas"))}
+            <button className="button" onClick={()=>{setColor('#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'))}}>
+                Change Color
+            </button>
             <h1>RunDefined</h1>
             <div className="card">
                 <div>
