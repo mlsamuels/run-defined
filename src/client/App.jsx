@@ -2,7 +2,7 @@ import {useState, useEffect, useRef} from "react";
 import "./App.css";
 import editorComponent from "./editor-component.jsx"
 import runResultComponent from "./run-result-component.jsx"
-import dotComponent from "./dot-component.jsx";
+import dotArrayComponent from "./dot-array-component.jsx";
 
 
 function App() {
@@ -31,7 +31,9 @@ function App() {
 
     const [visualization, setVisualization] =  useState("")
 
-    const [color, setColor]=useState("#000000")
+
+    const [colors, setColors]=useState(Array.from({ length: 50 }, () => Array(50).fill("#FFFFFF")))
+
 
     //initialization code
     useEffect( () => {
@@ -149,14 +151,15 @@ function App() {
     return (
 
         <div className="App">
-            <div>
-                <canvas id="canvas" width="2000" height="2000">
-                </canvas>
-            </div>
-            {dotComponent(100,100,color,document.getElementById("canvas"))}
-            <button className="button" onClick={()=>{setColor('#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'))}}>
+
+            {dotArrayComponent(50,50,colors)}
+            <button className="button" onClick={()=>{
+                setColors(Array.from({ length: 50 }, () => Array(50).fill('#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'))))
+                console.log(colors)
+            }}>
                 Change Color
             </button>
+
             <h1>RunDefined</h1>
             <div className="card">
                 <div>
