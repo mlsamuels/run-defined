@@ -17,7 +17,7 @@ Generalize
     ✅Game results
 Account for errors in code
     Before adding to database
-    During Game run
+    ✅During Game run
 
 Beyond:
 ✅Get game information

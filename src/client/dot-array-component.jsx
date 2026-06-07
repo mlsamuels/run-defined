@@ -3,16 +3,14 @@ import dotComponent from "./dot-component.jsx";
 
 export default function dotArrayComponent(width, height, values){
     let array=useRef(null)
-    let radius=10
-
+    let radius=50
 
     useEffect(() => {
-        radius=10
         if(array.current===null){
             array.current = Array.from({ length: height }, () => Array(width).fill(0))
             for(let i=0;i<array.current.length;i++){
                 for(let j=0;j<array.current[0].length;j++){
-                    array.current[i][j]=dotComponent(i*2*radius+radius, j*2*radius+radius, values[i][j], document.getElementById("canvas"));
+                    array.current[i][j]=dotComponent(i*2*radius+radius, j*2*radius+radius,radius, values[i][j], document.getElementById("canvas"));
                 }
             }
         }
