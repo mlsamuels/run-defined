@@ -20,20 +20,26 @@
     "@codemirror/view": "^6.41.0",
     "codemirror": "^6.0.2",
     "cross-env": "^7.0.3",
-    "dockerode": "^4.0.10",
+    "dockerode": "^5.0.0",
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
     "mongodb": "^6.21.0",
     "mongoose": "^8.23.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router-dom": "^7.17.0",
     "vite-express": "*"
   },
   "devDependencies": {
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "@vitejs/plugin-react": "^4.4.1",
+    "@vitejs/plugin-react": "^6.0.2",
     "nodemon": "^3.1.10",
-    "vite": "^6.3.3"
+    "vite": "8.0.5"
+  },
+  "allowScripts": {
+    "cpu-features@0.0.10": true,
+    "protobufjs@7.6.4": true,
+    "ssh2@1.17.0": true
   }
 }

@@ -2,7 +2,8 @@ import {useState, useEffect, useRef} from "react";
 import "./App.css";
 import editorComponent from "./editor-component.jsx"
 import runResultComponent from "./run-result-component.jsx"
-import dotArrayComponent from "./dot-array-component.jsx";
+import homePageDots from "./dots/home-page-dots.jsx";
+import {conwayRule} from "./dots/conway-rule.js";
 
 
 function App() {
@@ -30,9 +31,6 @@ function App() {
     const [leaderBoardData, setLeaderBoardData] = useState("");
 
     const [visualization, setVisualization] =  useState("")
-
-
-    const [colors, setColors]=useState(Array.from({ length: 50 }, () => Array(50).fill("#FFFFFF")))
 
 
     //initialization code
@@ -152,13 +150,14 @@ function App() {
 
         <div className="App">
 
-            {dotArrayComponent(50,50,colors)}
-            <button className="button" onClick={()=>{
-                setColors(Array.from({ length: 50 }, () => Array(50).fill('#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'))))
-                console.log(colors)
-            }}>
-                Change Color
-            </button>
+            {/*{dotArrayComponent(50,50,colors)}*/}
+            {/*<button className="button" onClick={()=>{*/}
+            {/*    setColors(Array.from({ length: 50 }, () => Array(50).fill('#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'))))*/}
+            {/*    console.log(colors)*/}
+            {/*}}>*/}
+            {/*    Change Color*/}
+            {/*</button>*/}
+            {homePageDots(conwayRule)}
 
             <h1>RunDefined</h1>
             <div className="card">

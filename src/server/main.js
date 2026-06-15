@@ -9,6 +9,9 @@ import dotenv from "dotenv";
 import {BiggerNumber} from "./games/bigger-number.js";
 import {TwentyOne} from "./games/twenty-one.js";
 
+import dns from "node:dns/promises";
+dns.setServers(["1.1.1.1", "1.0.0.1"]);
+
 dotenv.config();
 
 const app = express();

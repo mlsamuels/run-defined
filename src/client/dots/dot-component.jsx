@@ -9,10 +9,13 @@ export default function dotComponent(x, y,radius, color, c){
 
     //See if color has changed, animate if it has
     const check = ()=>{
-        console.log("ToColor: "+ toColor+", CurColor: "+ curColor+", color: "+ requestColor)
+        if(y===81*radius){
+            console.log("uo")
+        }
         if(isDisplayed&&(requestColor===curColor || isChanging)){
             return
         }
+
         isDisplayed=true
         toColor=requestColor
         isChanging=true;
@@ -20,6 +23,7 @@ export default function dotComponent(x, y,radius, color, c){
     }
 
     const update = (t)=> {
+
 
         const ctx = c.getContext("2d");
         ctx.clearRect(x - radius, y - radius, 2*radius, 2*radius);
@@ -62,6 +66,7 @@ export default function dotComponent(x, y,radius, color, c){
 
         t += 0.1
         if (t >= 2) {
+            ctx.clearRect(x - radius, y - radius, 2*radius, 2*radius);
             ctx.beginPath();
             ctx.lineWidth = 0;
             ctx.fillStyle = toColor;
