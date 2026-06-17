@@ -1,4 +1,6 @@
 export class conwayRule{
+
+
     static defaultArray(height, width){
         const newArray = Array.from({ length: height }, () =>
             Array(width).fill(null));

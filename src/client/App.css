@@ -1,3 +1,15 @@
+html, body {
+  overflow-x: hidden;
+  margin:0;
+  padding:0;
+  box-sizing: border-box
+}
+div{
+  padding:0;
+  margin:0;
+  box-sizing: border-box
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -18,9 +30,40 @@ pre {
   text-align: left;
 }
 
-#canvas{
+div{
+  /*padding:0;*/
+  /*margin-left:0;*/
+  /*margin-right:auto;*/
+  /*text-align: left;*/
+  /*overflow-x: hidden;*/
+}
 
-  width: 60vw;
+.overlay-container{
+  overflow-y: auto;
+}
+
+.overlay{
+  position: fixed;
+  background: white;
+  opacity: 0.95;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 100dvh;
+  width: 50vw;
+  z-index:-1;
+}
+
+canvas{
+  padding:0;
+  margin:0;
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -2;
+
 
   background-color: #f0f0f0;
 }

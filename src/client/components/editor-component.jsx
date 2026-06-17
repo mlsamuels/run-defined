@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { createEditor } from "./editor-utils";
+import { createEditor } from "./editor-utils.js";
 
 export default function editorComponent(defaultText, onChange) {
     const containerRef = useRef(null);
