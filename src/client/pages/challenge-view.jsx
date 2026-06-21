@@ -1,17 +1,18 @@
 import {useState, useEffect, useRef} from "react";
-import editorComponent from "../components/editor-component.jsx"
+import editorComponent from "../components/editor/editor-component.jsx"
 import runResultComponent from "../components/run-result-component.jsx"
-import {Link} from "react-router-dom";
+import {Link,useLocation} from "react-router-dom";
+import leaderboardComponent from "../components/leaderboard/leaderboard-component.jsx";
 
 export default function ChallengeView(){
+    const location = useLocation();
+    const gameNum = Number(location.pathname.split("challenge/")[1])
+
     //Text for the stdout section
     const [outText, setOutText] = useState("");
     //Text for the stderr section
     const [errText, setErrText] = useState("");
 
-    //Users chosen game number
-    const [gameNum, setGameNum] = useState(0);
-    //Text for the name of the current game
     const [gameName, setGameName] = useState("");
     //Text for the description of the current game
     const [descriptionText, setDescriptionText] = useState("");
@@ -32,7 +33,7 @@ export default function ChallengeView(){
 
     //initialization code
     useEffect( () => {
-        changeGame(0)
+        changeGame(gameNum)
 
     }, []);
 
@@ -72,7 +73,7 @@ export default function ChallengeView(){
         setErrText("");
         console.log("Submission Real Code: "+realCode.current.code)
         try {
-            setLeaderBoardData("Waiting for Leader Board...");
+            //setLeaderBoardData("Waiting for Leader Board...");
             setVisualization("");
             const response = await fetch('/submitfunction', {
                 method: 'POST',
@@ -91,6 +92,7 @@ export default function ChallengeView(){
             const result = await response.json();
 
             const leaderBoard = result["leaderBoard"];
+            console.log(leaderBoard)
             setLeaderBoardData(leaderBoard)
             setVisualization(result["visualizations"])
         } catch (err) {
@@ -101,7 +103,6 @@ export default function ChallengeView(){
 
     //Switching the gameNum to a different game, gets information and updates code editor
     const changeGame = async (num) => {
-        setGameNum(Number(num))
         try {
             const response = await fetch(`/gameinfo/${num}`, {
                 method: 'GET',
@@ -109,12 +110,9 @@ export default function ChallengeView(){
             });
 
             if (!response.ok) {
-                console.log((await response.json())["error"])
                 throw new Error('Network response was not ok');
             }
             const result = await response.json();
-
-            console.log(result)
 
             setTestCases(result.defaultTests)
             setDefaultCode(result.defaultCode)
@@ -151,11 +149,7 @@ export default function ChallengeView(){
             <div className="card">
                 <Link to={"/"}><h1>RunDefined</h1></Link>
                 <div>
-                    <h2>Game:</h2>
-                    <select onChange={(event)=>changeGame(event.target.value)}>
-                        <option value={0}>0</option>
-                        <option value={1}>1</option>
-                    </select>
+                    <h2>Game {gameNum}:</h2>
                     <h3>
                         {gameName}
                     </h3>
@@ -197,8 +191,9 @@ export default function ChallengeView(){
                 {runResultComponent(outText, "stdout", false)}
                 {runResultComponent(errText, "stderr", true)}
 
+
                 <div>
-                    {leaderBoardData}
+                    {leaderboardComponent(leaderBoardData)}
                 </div>
 
                 <div>

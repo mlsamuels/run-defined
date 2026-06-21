@@ -9,20 +9,21 @@ import dotenv from "dotenv";
 import {BiggerNumber} from "./games/bigger-number.js";
 import {TwentyOne} from "./games/twenty-one.js";
 
-import dns from "node:dns/promises";
-dns.setServers(["1.1.1.1", "1.0.0.1"]);
+// import dns from "node:dns/promises";
+// dns.setServers(["1.1.1.1", "1.0.0.1"]);
 
 dotenv.config();
 
 const app = express();
 
-
 //Database connection
+console.log("0")
 await mongoose.connect(process.env.MONGODB_URI, {});
+
+console.log("1")
 const db = mongoose.connection;
 db.on("error", (err) => console.log(err));
 const gameZeroSubmissions = db.collection("gameZeroSubmissions");
-
 
 app.use(express.json());
 

@@ -66,6 +66,7 @@ export function createEditor(target, initialDoc = "", onChange) {
             autocompletion(),
             rectangularSelection(),
             crosshairCursor(),
+            //highlightActiveLine(),
             highlightActiveLineGutter(),
             highlightSelectionMatches(),
             //Keymap changes key functionality when editor is selected

@@ -16,7 +16,8 @@ export default function HomePage(){
                 <div className="overlay"></div>
             </div>
 
-            <Link to="/challenge">Challenge 0</Link>
+            <Link to="/challenge/0">Challenge 0</Link><br/>
+            <Link to="/challenge/1">Challenge 1</Link>
         </div>
     );
 }
