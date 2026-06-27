@@ -1,11 +1,12 @@
 import {useEffect, useRef} from "react";
 import dotComponent from "./dot-component.jsx";
 
-export default function dotArrayComponent(width, height, values){
+export default function DotArrayComponent({width, height, values}){
     let array=useRef(null)
     let radius=30
 
     useEffect(() => {
+        console.log("I made it here"+width+", "+height)
         if(array.current===null){
             array.current = Array.from({ length: height }, () => Array(width).fill(0))
             for(let i=0;i<array.current.length;i++){
@@ -34,8 +35,6 @@ export default function dotArrayComponent(width, height, values){
                 <canvas id="canvas" width={radius*2*width} height={radius*2*height}>
                 </canvas>
             </div>
-
-
         </div>
     )
 }

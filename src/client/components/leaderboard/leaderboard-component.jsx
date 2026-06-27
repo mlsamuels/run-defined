@@ -7,12 +7,11 @@ export default function leaderboardComponent(data){
     }
 
     const dataToHTML=()=>{
-
-        console.log(JSON.parse(data).map((entry)=>(<tr><th>{entry.name}</th><th>{entry.elo}</th></tr>)))
+        console.log(data[0])
         return (<table>
             <thead><tr><th>Name</th><th>Elo</th></tr></thead>
             <tbody>
-            {JSON.parse(data).map((entry)=>(<tr><th>{entry.name}</th><th>{(parseInt(entry.elo))}</th></tr>))}
+            {data.map((entry)=>(<tr><th>{entry.name}</th><th>{(parseInt(entry.elo))}</th></tr>))}
             </tbody>
             </table>)
 

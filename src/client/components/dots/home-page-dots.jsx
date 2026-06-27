@@ -1,4 +1,4 @@
-import dotArrayComponent from "./dot-array-component.jsx"
+import DotArrayComponent from "./dot-array-component.jsx"
 import {useEffect, useState} from "react";
 
 export default function homePageDots(dotRules){
@@ -13,5 +13,5 @@ export default function homePageDots(dotRules){
         return () => clearInterval(intervalId);
     }, []);
 
-    return(dotArrayComponent(45,32,array))
+    return(<DotArrayComponent width={45} height={32} values={array}/>)
 }

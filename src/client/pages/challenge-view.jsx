@@ -3,6 +3,7 @@ import editorComponent from "../components/editor/editor-component.jsx"
 import runResultComponent from "../components/run-result-component.jsx"
 import {Link,useLocation} from "react-router-dom";
 import leaderboardComponent from "../components/leaderboard/leaderboard-component.jsx";
+import gameResultComponent from "../components/result/game-result-component.jsx";
 
 export default function ChallengeView(){
     const location = useLocation();
@@ -28,7 +29,7 @@ export default function ChallengeView(){
     //LeaderBoard
     const [leaderBoardData, setLeaderBoardData] = useState("");
 
-    const [visualization, setVisualization] =  useState("")
+    const [visualization, setVisualization] =  useState([])
 
 
     //initialization code
@@ -74,7 +75,7 @@ export default function ChallengeView(){
         console.log("Submission Real Code: "+realCode.current.code)
         try {
             //setLeaderBoardData("Waiting for Leader Board...");
-            setVisualization("");
+            setVisualization([]);
             const response = await fetch('/submitfunction', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -92,9 +93,9 @@ export default function ChallengeView(){
             const result = await response.json();
 
             const leaderBoard = result["leaderBoard"];
-            console.log(leaderBoard)
-            setLeaderBoardData(leaderBoard)
-            setVisualization(result["visualizations"])
+
+            setLeaderBoardData(JSON.parse(leaderBoard))
+            setVisualization(JSON.parse(result["visualizations"]))
         } catch (err) {
             console.log(err);
         }
@@ -197,7 +198,7 @@ export default function ChallengeView(){
                 </div>
 
                 <div>
-                    {visualization}
+                    {gameResultComponent(visualization)}
                 </div>
             </div>
         </div>
