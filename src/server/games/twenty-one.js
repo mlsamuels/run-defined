@@ -57,7 +57,7 @@ export class TwentyOne extends Game{
 
     static getInfo(){
         return {"name":"Twenty One Game",
-            "description":"In this game, two agents will take turns taking 1, 2, or 3 sticks, whoever takes the final stick wins.",
+            "description":"In this game, two agents will take turns taking 1, 2, or 3 sticks, whoever takes the final stick wins. 'input' is how many sticks are left, return the number you want to take.",
             "defaultCode": defaultCode,
             "defaultTests": [["21"],["1"],["2"]]}
     }
