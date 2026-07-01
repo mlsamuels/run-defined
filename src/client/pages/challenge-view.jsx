@@ -1,18 +1,16 @@
 import {useState, useEffect, useRef} from "react";
 import editorComponent from "../components/editor/editor-component.jsx"
-import runResultComponent from "../components/run-result-component.jsx"
 import {Link,useLocation} from "react-router-dom";
 import leaderboardComponent from "../components/leaderboard/leaderboard-component.jsx";
 import gameResultComponent from "../components/result/game-result-component.jsx";
+import testResultComponent from "../components/tests/test-result-component.jsx";
 
 export default function ChallengeView(){
     const location = useLocation();
     const gameNum = Number(location.pathname.split("challenge/")[1])
 
     //Text for the stdout section
-    const [outText, setOutText] = useState("");
-    //Text for the stderr section
-    const [errText, setErrText] = useState("");
+    const [testResultData, setTestResultData] = useState([]);
 
     const [gameName, setGameName] = useState("");
     //Text for the description of the current game
@@ -31,18 +29,15 @@ export default function ChallengeView(){
 
     const [visualization, setVisualization] =  useState([])
 
-
     //initialization code
     useEffect( () => {
         changeGame(gameNum)
 
     }, []);
 
-
     //Pressing the test button
     const testPress = async () => {
-        setOutText("");
-        setErrText("");
+        setTestResultData([]);
         try {
             const response = await fetch('/testfunction', {
                 method: 'POST',
@@ -59,9 +54,8 @@ export default function ChallengeView(){
             }
             const result = await response.json();
 
-            console.log(result)
-            setOutText(JSON.parse(result["data"])[0][0])
-            setErrText(JSON.parse(result["data"])[0][1])
+            setTestResultData(JSON.parse(result["data"]))
+
         } catch (err) {
             console.log(err);
         }
@@ -70,8 +64,7 @@ export default function ChallengeView(){
 
     //Pressing the submit button
     const submitPress = async () => {
-        setOutText("");
-        setErrText("");
+        setTestResultData([])
         console.log("Submission Real Code: "+realCode.current.code)
         try {
             //setLeaderBoardData("Waiting for Leader Board...");
@@ -145,8 +138,6 @@ export default function ChallengeView(){
     return (
 
         <div className="App">
-
-
             <div className="card">
                 <Link to={"/"}><h1>RunDefined</h1></Link>
                 <div>
@@ -189,8 +180,7 @@ export default function ChallengeView(){
                     {testCaseDisplay()}
                 </div>
 
-                {runResultComponent(outText, "stdout", false)}
-                {runResultComponent(errText, "stderr", true)}
+                {testResultComponent(testCases, testResultData)}
 
 
                 <div>

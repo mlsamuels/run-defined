@@ -13,5 +13,7 @@ export default function homePageDots(dotRules){
         return () => clearInterval(intervalId);
     }, []);
 
-    return(<DotArrayComponent width={45} height={32} values={array}/>)
+    return(<div className="home-page-dots">
+        <DotArrayComponent width={45} height={32} values={array}/>
+    </div>)
 }

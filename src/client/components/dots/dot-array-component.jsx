@@ -30,11 +30,7 @@ export default function DotArrayComponent({width, height, values}){
     }, [values])
 
     return(
-        <div>
-            <div>
                 <canvas id="canvas" width={radius*2*width} height={radius*2*height}>
                 </canvas>
-            </div>
-        </div>
     )
 }
