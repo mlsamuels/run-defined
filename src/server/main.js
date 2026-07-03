@@ -30,22 +30,18 @@ app.use(express.json());
 app.get("/gameinfo/:game", (req, res) => {
   const game = req.params.game;
   if(game<games.length){
-    req.ok=true;
     res.send(games[game].getInfo())
   }
   else{
-    req.ok=false;
-    res.send({"error": "Game not found"});
+    res.status(400).json({"error":"Game not found"});
   }
 });
 
 //post for testing code
 app.post("/testfunction", async (req, res) => {
-  res.ok=true;
   const code = req.body.code;
   const tests = req.body.tests;
   const game = req.body.game;
-
 
   const testResults=[]
   for(let i =0; i<tests.length;i++){
@@ -67,14 +63,18 @@ app.post("/submitfunction", async (req, res) => {
 
 
   //check if name in use
+  if(name===""){
+    res.status(400).json({"error":"Must have name"});
+    return
+  }
   const existing = await gameZeroSubmissions.findOne({name: name, game:game})
   if(existing){
-    req.ok =false;
-    res.send({"error": "Name in use"});
+    res.status(409).json({"error":"Name in use"});
     return
   }
 
   //TODO Make sure code works before adding to database
+  console.log(name +" has been entered!")
 
   //add to database
   const insert_result = await gameZeroSubmissions.insertOne({name: name, code: code, elo: 1500, game:game})
@@ -84,7 +84,6 @@ app.post("/submitfunction", async (req, res) => {
   await playRand(game, 5)
 
   const leaderBoard = await getLeaderBoard(game)
-  res.ok=true;
   res.send({"leaderBoard":JSON.stringify(leaderBoard), "visualizations": JSON.stringify(visualizations)});
 });
 
@@ -131,7 +130,6 @@ async function playGames(id, count){
     //Closest match
     const p1= searchResult[0];
     visualizations.push(await playGame(p0,p1))
-    console.log(p0.name+" vs. "+p1.name)
     p0 = await gameZeroSubmissions.findOne({_id: id})
   }
   return visualizations;
@@ -178,6 +176,7 @@ async function playGame(p0, p1){
   await gameZeroSubmissions.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
   await gameZeroSubmissions.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
 
+  console.log(p0.name+" vs. "+p1.name)
   return [visualization,p0.name,p1.name,result];
 
 }

@@ -2,7 +2,6 @@ import DotArrayComponent from "../dots/dot-array-component.jsx";
 import {useState} from "react";
 
 export default function gameResultComponent(data){
-    console.log(data[0])
 
     const [pageNum, setPageNum] = useState(0)
     const [gameNum, setGameNum] = useState(0)
@@ -39,10 +38,11 @@ export default function gameResultComponent(data){
                 height={data[0][0][0].length}
                 values={representationToColors(data[gameNum][0][pageNum])}
                 />
-            <button onClick={()=>{buttonClick(true,false)}}>Turn Left</button>
-            <button onClick={()=>{buttonClick(false,false)}}>Turn Right</button>
-            <button onClick={()=>{buttonClick(true,true)}}>Game Left</button>
-            <button onClick={()=>{buttonClick(false,true)}}>Game Right</button>
+            <br></br>
+            <button onClick={()=>{buttonClick(true,false)}}>Prev Turn</button>
+            <button onClick={()=>{buttonClick(false,false)}}>Next Turn</button>
+            <button onClick={()=>{buttonClick(true,true)}}>Prev Game</button>
+            <button onClick={()=>{buttonClick(false,true)}}>Next Game</button>
         </div>
     );
 }

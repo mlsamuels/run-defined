@@ -6,7 +6,6 @@ export default function DotArrayComponent({width, height, values}){
     let radius=30
 
     useEffect(() => {
-        console.log("I made it here"+width+", "+height)
         if(array.current===null){
             array.current = Array.from({ length: height }, () => Array(width).fill(0))
             for(let i=0;i<array.current.length;i++){

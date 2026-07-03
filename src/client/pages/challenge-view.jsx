@@ -23,6 +23,8 @@ export default function ChallengeView(){
     //Test Cases
     const [testCases, setTestCases] = useState([]);
 
+    const [userError, setUserError] = useState("");
+
     //LeaderBoard
     const [leaderBoardData, setLeaderBoardData] = useState("");
 
@@ -38,6 +40,7 @@ export default function ChallengeView(){
 
     //Pressing the test button
     const testPress = async () => {
+        setUserError("")
         setThrobbing(true)
         setTestResultData([]);
         try {
@@ -67,6 +70,7 @@ export default function ChallengeView(){
 
     //Pressing the submit button
     const submitPress = async () => {
+        setUserError("")
         setTestResultData([])
         setThrobbing(true)
         try {
@@ -81,9 +85,9 @@ export default function ChallengeView(){
                     "game": gameNum
                 }),
             });
-
+            console.log(response)
             if (!response.ok) {
-                console.log((await response.json())["error"])
+                setUserError((await response.json())["error"])
                 throw new Error('Network response was not ok');
             }
             const result = await response.json();
@@ -177,6 +181,9 @@ export default function ChallengeView(){
 
                 <div>
                     {throbberComponent(throbbing)}
+                </div>
+                <div>
+                    {userError}
                 </div>
                 <div>
                     {leaderboardComponent(leaderBoardData)}
