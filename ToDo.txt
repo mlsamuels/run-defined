@@ -22,9 +22,9 @@ Account for errors in code
 Beyond:
 ✅Get game information
 ✅More Games
-User can test code
+✅User can test code
     Edit test cases
-    Display all test results
+    ✅Display all test results
 
 ✅Decide Pages
 ✅Page navigation
@@ -33,9 +33,12 @@ Site Design
     Ambient animations
     Animate games
 
-Results Nice looking
-Leaderboard
-Tests Nice Looking
+✅Results Nice looking
+✅Leaderboard
+✅Tests Nice Looking
 Automatic List of Challenges
 Homepage Nice Looking
     Multiple tabs
+
+✅Throbber
+✅Save code/name when reload

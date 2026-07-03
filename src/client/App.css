@@ -72,3 +72,6 @@ canvas{
   position: absolute;
   background-color: #f0f0f0;
 }
+.throbber-dots>canvas{
+  width: 10vw;
+}

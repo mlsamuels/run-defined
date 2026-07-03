@@ -1,9 +1,10 @@
-import {useState, useEffect, useRef} from "react";
+import {useState, useEffect} from "react";
 import editorComponent from "../components/editor/editor-component.jsx"
 import {Link,useLocation} from "react-router-dom";
 import leaderboardComponent from "../components/leaderboard/leaderboard-component.jsx";
 import gameResultComponent from "../components/result/game-result-component.jsx";
 import testResultComponent from "../components/tests/test-result-component.jsx";
+import throbberComponent from "../components/throbber/throbber-component.jsx";
 
 export default function ChallengeView(){
     const location = useLocation();
@@ -16,10 +17,8 @@ export default function ChallengeView(){
     //Text for the description of the current game
     const [descriptionText, setDescriptionText] = useState("");
 
-    //The default code in the code editor, this acts as a way of modifying the code that is there
+    //The default code in the code editor
     const [defaultCode, setDefaultCode] = useState("");
-    //The actual code that has been typed in the editor, this is up to date and default code is not
-    const realCode = useRef({code: ""});
 
     //Test Cases
     const [testCases, setTestCases] = useState([]);
@@ -29,6 +28,8 @@ export default function ChallengeView(){
 
     const [visualization, setVisualization] =  useState([])
 
+    const [throbbing, setThrobbing] =  useState(false)
+
     //initialization code
     useEffect( () => {
         changeGame(gameNum)
@@ -37,13 +38,14 @@ export default function ChallengeView(){
 
     //Pressing the test button
     const testPress = async () => {
+        setThrobbing(true)
         setTestResultData([]);
         try {
             const response = await fetch('/testfunction', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    "code": realCode.current.code,
+                    "code": localStorage.getItem("code"+gameNum),
                     "tests": testCases,
                     "game": gameNum
                 }),
@@ -59,13 +61,14 @@ export default function ChallengeView(){
         } catch (err) {
             console.log(err);
         }
+        setThrobbing(false)
 
     }
 
     //Pressing the submit button
     const submitPress = async () => {
         setTestResultData([])
-        console.log("Submission Real Code: "+realCode.current.code)
+        setThrobbing(true)
         try {
             //setLeaderBoardData("Waiting for Leader Board...");
             setVisualization([]);
@@ -73,8 +76,8 @@ export default function ChallengeView(){
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    "code": realCode.current.code,
-                    "name": localStorage.getItem("name"),
+                    "code": localStorage.getItem("code"+gameNum),
+                    "name": localStorage.getItem("name"+gameNum),
                     "game": gameNum
                 }),
             });
@@ -92,7 +95,7 @@ export default function ChallengeView(){
         } catch (err) {
             console.log(err);
         }
-
+        setThrobbing(false)
     }
 
     //Switching the gameNum to a different game, gets information and updates code editor
@@ -109,8 +112,14 @@ export default function ChallengeView(){
             const result = await response.json();
 
             setTestCases(result.defaultTests)
-            setDefaultCode(result.defaultCode)
-            realCode.current.code=result.defaultCode
+
+
+            const prevCode = localStorage.getItem("code"+gameNum)
+            if(prevCode===null || prevCode===""){
+                localStorage.setItem("code"+gameNum, result.defaultCode)
+            }
+            setDefaultCode(localStorage.getItem("code"+gameNum))
+
             setGameName(result.name);
             setDescriptionText(result.description);
             setLeaderBoardData("")
@@ -121,12 +130,10 @@ export default function ChallengeView(){
 
     //Callback function for code editor
     const onCodeChange = (newText) => {
-        realCode.current.code=newText;
+        localStorage.setItem("code"+gameNum,newText);
     }
 
-
     return (
-
         <div className="App">
             <div className="card">
                 <Link to={"/"}><h1>RunDefined</h1></Link>
@@ -147,7 +154,7 @@ export default function ChallengeView(){
                 <div>
                     <h2>Name:</h2>
                     <div>
-                        <input onChange={(event)=>{localStorage.setItem("name", event.target.value)}} />
+                        <input defaultValue={localStorage.getItem("name"+gameNum)} onChange={(event)=>{localStorage.setItem("name"+gameNum, event.target.value)}} />
                     </div>
                 </div>
 
@@ -168,7 +175,9 @@ export default function ChallengeView(){
 
                 {testResultComponent(testCases, testResultData)}
 
-
+                <div>
+                    {throbberComponent(throbbing)}
+                </div>
                 <div>
                     {leaderboardComponent(leaderBoardData)}
                 </div>
