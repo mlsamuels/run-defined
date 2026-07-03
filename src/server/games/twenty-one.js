@@ -1,6 +1,6 @@
 import {Game} from "./game.js";
 
-//Game Class for "Think of a bigger number" game
+//Game Class for Twenty-One game
 export class TwentyOne extends Game{
     constructor(players) {
         super(players);

@@ -25,7 +25,8 @@ export default function gameResultComponent(data){
     }
 
     const representationToColors = (representation)=>{
-        return representation.map((row)=>(row.map((value)=>(value==="0"?"#FFFFFF":"#000000"))))
+        const dict = {"0":"#FFFFFF", "1":"#000000", "P0":"#0000FF", "P1":"#FF0000"}
+        return representation.map((row)=>(row.map((value)=>(dict[value]))))
     }
 
     return (

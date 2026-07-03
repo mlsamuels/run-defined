@@ -124,16 +124,6 @@ export default function ChallengeView(){
         realCode.current.code=newText;
     }
 
-    const testCaseDisplay=()=>{
-        let result=""
-        testCases.forEach((testCase) => {
-            testCase.forEach((arg)=>{
-                result+=arg+" "
-            })
-            result+="|"
-        })
-        return result
-    }
 
     return (
 
@@ -175,10 +165,6 @@ export default function ChallengeView(){
                 <button className="button" onClick={submitPress}>
                     Submit
                 </button>
-
-                <div>
-                    {testCaseDisplay()}
-                </div>
 
                 {testResultComponent(testCases, testResultData)}
 
