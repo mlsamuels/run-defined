@@ -80,8 +80,8 @@ export default function ChallengeView(){
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    "code": localStorage.getItem("code"+gameNum),
-                    "name": localStorage.getItem("name"+gameNum),
+                    "code": localStorage.getItem("code"+gameNum)??"",
+                    "name": localStorage.getItem("name"+gameNum)??"",
                     "game": gameNum
                 }),
             });
@@ -119,7 +119,7 @@ export default function ChallengeView(){
 
 
             const prevCode = localStorage.getItem("code"+gameNum)
-            if(prevCode===null || prevCode===""){
+            if(prevCode ===undefined ||prevCode===null || prevCode===""){
                 localStorage.setItem("code"+gameNum, result.defaultCode)
             }
             setDefaultCode(localStorage.getItem("code"+gameNum))

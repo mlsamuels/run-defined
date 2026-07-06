@@ -100,7 +100,7 @@ export class Pythons extends Game{
 
     static getInfo(){
         return {"name":"Pythons",
-            "description":"In this game, two agents will take choosing which direction to move their snake. The snake grows from where they move. If you run into your tail, your opponents tail, or a wall, you lose. Input is a 2D list showing a board.\"0\" is empty, \"1\" is the tail of a snake, and \"P0\" is your player and \"P1\"is the opposing player. Return \"U\",\"D\",\"L\",\"R\" for which direction your python should move. (0,0) is the top-left of the board.",
+            "description":"In this game, two agents will take turns choosing which direction to move their snake. The snake grows from where they move. If you run into your tail, your opponents tail, or a wall, you lose. Input is a 2D list showing a board.\"0\" is empty, \"1\" is the tail of a snake, \"P0\" is your player and \"P1\"is the opposing player. Return \"U\",\"D\",\"L\",\"R\" for which direction your python should move. (0,0) is the top-left of the board. coords[0] has your coordinates, coords[1] has your opponents coordinates.",
             "defaultCode": defaultCode,
             "defaultTests": [["[[\"0\",\"0\",\"0\",\"0\"],[\"P0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"P1\"],[\"0\",\"0\",\"0\",\"0\"]]","[[1,0],[2,3]]"],
                 ["[[\"0\",\"0\",\"0\",\"0\"],[\"1\",\"P1\",\"0\",\"0\"],[\"0\",\"0\",\"P0\",\"1\"],[\"0\",\"0\",\"0\",\"0\"]]","[[2,2],[1,1]]"],
@@ -113,5 +113,5 @@ const pythonCode= `import script
 result = script.function({0},{1})
 print(result)`
 
-const defaultCode= `def function(boards, coords):
+const defaultCode= `def function(board, coords):
   return "U"`

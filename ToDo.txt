@@ -30,13 +30,13 @@ Beyond:
 ✅Page navigation
 Site Design
 ✅Canvas/animations (Use same base system for both [flipdots??])
-    Ambient animations
-    Animate games
+    ✅Ambient animations
+    ✅Animate games
 
 ✅Results Nice looking
 ✅Leaderboard
 ✅Tests Nice Looking
-Automatic List of Challenges
+✅Automatic List of Challenges
 Homepage Nice Looking
     Multiple tabs
 

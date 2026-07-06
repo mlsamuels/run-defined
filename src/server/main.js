@@ -37,6 +37,10 @@ app.get("/gameinfo/:game", (req, res) => {
   }
 });
 
+app.get("/gamelist", (req, res) => {
+  res.send(JSON.stringify(games.map((game) => game.getInfo()["name"])))
+})
+
 //post for testing code
 app.post("/testfunction", async (req, res) => {
   const code = req.body.code;
@@ -87,9 +91,15 @@ app.post("/submitfunction", async (req, res) => {
   res.send({"leaderBoard":JSON.stringify(leaderBoard), "visualizations": JSON.stringify(visualizations)});
 });
 
-ViteExpress.listen(app, 3000, () =>
-  console.log("Server is listening on port 3000..."),
-);
+// ViteExpress.listen(app, 3000, () =>
+//   console.log("Server is listening on port 3000..."),
+// );
+const PORT=3000
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Express listening on LAN at port ${PORT}`);
+});
+ViteExpress.bind(app,server)
+
 
 //List of all games, index represents which number game it is
 const games=[BiggerNumber, TwentyOne, Pythons]
@@ -189,7 +199,7 @@ function makePlayerFunction(playerCode, gameCode){
     //Run python file and get output
     const output= await runCode(playerCode, gameCode, args)
     //Error in run
-    if(output[1].length>0){
+    if(output[0].length===0 || output[1].length>0){
       return null
     }
 
