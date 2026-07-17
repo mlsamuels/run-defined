@@ -84,7 +84,7 @@ canvas{
 
 
 .home-tab{
-  background-color: rgb(200 200 200 / 20%);
+  background-color: rgb(217 217 217 / 70%);
   border-radius: 20px 20px 0 0;
   width: calc(50vw);
   height: 80px;
@@ -95,7 +95,7 @@ canvas{
 }
 
 .home-tab:hover{
-  background-color: rgb(150 150 150 / 20%);
+  background-color: rgb(200 200 200 / 70%);
 }
 
 .home-tab-selected{
@@ -106,10 +106,13 @@ canvas{
 }
 
 .home-tab-image{
-  max-width: 40%;
+  max-width: 30%;
 }
 
 
-.home-tab>p{
-
+.home-tab-text{
+  font-size: large;
+  font-weight: bold;
+  color: black;
+  font-family: 'Inter', sans-serif;
 }

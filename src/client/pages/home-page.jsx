@@ -2,12 +2,26 @@
 import homePageDots from "../components/dots/home-page-dots.jsx";
 import {conwayRule} from "../components/dots/conway-rule.js";
 import homeTabComponent from "../components/home/home-tab-component.jsx";
-import {Link, Outlet} from 'react-router-dom'
+import {Link, Outlet, useLocation} from 'react-router-dom'
 import {useEffect, useState} from "react";
 
 export default function HomePage(){
 
     const [gameList, setGameList] = useState([]);
+
+    const path =  useLocation().pathname
+    const tabSelected = (path)=>{
+        if(path.includes("/challenges")){
+            return 2;
+        }
+        if(path.includes("/about")){
+            return 3;
+        }
+        if(path.includes("/more")){
+            return 4;
+        }
+        return 1;
+    }
 
     useEffect( () => {
         updateGameList()
@@ -39,10 +53,10 @@ export default function HomePage(){
 
             <div className="home-tabs-container">
                 <div className="home-tabs">
-                    {homeTabComponent("/home","","/public/RDlogo.png",true)}
-                    {homeTabComponent("/home/tab2","Tab2","",false)}
-                    {homeTabComponent("/home/tab3","Tab3","",false)}
-                    {homeTabComponent("/home/tab4","Tab4","",false)}
+                    {homeTabComponent("/home","","/public/RD.svg",tabSelected(path)===1)}
+                    {homeTabComponent("/home/challenges","Challenges","",tabSelected(path)===2)}
+                    {homeTabComponent("/home/about","About","",tabSelected(path)===3)}
+                    {homeTabComponent("/home/more","More","",tabSelected(path)===4)}
                 </div>
             </div>
 
