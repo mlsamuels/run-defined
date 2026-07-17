@@ -1,8 +1,8 @@
 
 import homePageDots from "../components/dots/home-page-dots.jsx";
 import {conwayRule} from "../components/dots/conway-rule.js";
-
-import {Link} from 'react-router-dom'
+import homeTabComponent from "../components/home/home-tab-component.jsx";
+import {Link, Outlet} from 'react-router-dom'
 import {useEffect, useState} from "react";
 
 export default function HomePage(){
@@ -37,9 +37,23 @@ export default function HomePage(){
         <div className="App">
             {homePageDots(conwayRule)}
 
+            <div className="home-tabs-container">
+                <div className="home-tabs">
+                    {homeTabComponent("","public/RDlogo.png",true)}
+                    {homeTabComponent("Tab2","",false)}
+                    {homeTabComponent("Tab3","",false)}
+                    {homeTabComponent("Tab4","",false)}
+                </div>
+            </div>
+            <Link to={"/home"}>Hello</Link>
+
+
+
             <div className="overlay-container">
                 <div className="overlay"></div>
             </div>
+
+            <Outlet/>
 
             {gameList.map((value, index)=>(<div><Link to={"/challenge/"+index}>{index+". "+value}</Link><br/></div>))}
 

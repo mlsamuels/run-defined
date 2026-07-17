@@ -122,12 +122,14 @@ async function getLeaderBoard(game){
 async function playGames(id, count){
   let p0 = await gameZeroSubmissions.findOne({_id: id})
   const visualizations=[]
+  const modifierInfluence = 50
+  let modifier=0;
   for (let i = 0; i < count; i++) {
     //Find matches nearby
     const searchResult= await gameZeroSubmissions.aggregate([
       {
         $addFields: {
-          diff: { $abs: { $subtract: ["$elo", p0.elo] } }
+          diff: { $abs: { $subtract: ["$elo", p0.elo+modifier*modifierInfluence] } }
         }
       },
       { $match: { _id: { $ne: id}, game: p0.game}},
@@ -140,7 +142,10 @@ async function playGames(id, count){
     //Closest match
     const p1= searchResult[0];
     visualizations.push(await playGame(p0,p1))
+    const oldElo = p0.elo
     p0 = await gameZeroSubmissions.findOne({_id: id})
+    const newElo = p0.elo
+    modifier+= Math.sign(newElo-oldElo)
   }
   return visualizations;
 }
@@ -292,8 +297,8 @@ async function startContainer() {
 
 //Given two elos and the winner, give elo change
 function eloUpdate(elo0, elo1, winner){
-  const p0=(1.0/(1.0+10**((elo1-elo0)/400)))
+  const p0=(1.0/(1.0+10**((elo1-elo0)/100)))
   const p1=1.0-p0
-  const K=30
+  const K=200
   return winner*K*p0 + (1.0-winner)*K*p1
 }

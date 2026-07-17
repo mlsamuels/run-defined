@@ -30,13 +30,6 @@ pre {
   text-align: left;
 }
 
-div{
-  /*padding:0;*/
-  /*margin-left:0;*/
-  /*margin-right:auto;*/
-  /*text-align: left;*/
-  /*overflow-x: hidden;*/
-}
 
 .overlay-container{
   overflow-y: auto;
@@ -74,4 +67,42 @@ canvas{
 }
 .throbber-dots>canvas{
   width: 10vw;
+}
+
+
+.home-tabs{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  gap: calc(0.5vw);
+}
+
+
+.home-tab{
+  background-color: rgb(200 200 200 / 20%);
+  border-radius: 20px 20px 0 0;
+  width: calc(50vw);
+  height: 80px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-tab-selected{
+ background-color: transparent;
+}
+
+.home-tab-image{
+  max-width: 40%;
+}
+
+
+.home-tab>p{
+
 }
