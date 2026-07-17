@@ -94,8 +94,15 @@ canvas{
   align-items: center;
 }
 
+.home-tab:hover{
+  background-color: rgb(150 150 150 / 20%);
+}
+
 .home-tab-selected{
  background-color: transparent;
+}
+.home-tab-selected:hover{
+  background-color: transparent;
 }
 
 .home-tab-image{

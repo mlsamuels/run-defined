@@ -9,7 +9,9 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/:home?" element={<HomePage />}>
-                    <Route path="/:home?/hi" element={<div>TESTING</div>}/>
+                    <Route path="/:home?/tab2" element={<div>TESTING PAGE 2</div>}/>
+                    <Route path="/:home?/tab3" element={<div>TESTING PAGE 3</div>}/>
+                    <Route path="/:home?/tab4" element={<div>TESTING PAGE 4</div>}/>
                 </Route>
 
                 <Route path="/challenge/*" element={<ChallengeView />} />

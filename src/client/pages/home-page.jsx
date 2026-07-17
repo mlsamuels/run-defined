@@ -39,14 +39,12 @@ export default function HomePage(){
 
             <div className="home-tabs-container">
                 <div className="home-tabs">
-                    {homeTabComponent("","public/RDlogo.png",true)}
-                    {homeTabComponent("Tab2","",false)}
-                    {homeTabComponent("Tab3","",false)}
-                    {homeTabComponent("Tab4","",false)}
+                    {homeTabComponent("/home","","/public/RDlogo.png",true)}
+                    {homeTabComponent("/home/tab2","Tab2","",false)}
+                    {homeTabComponent("/home/tab3","Tab3","",false)}
+                    {homeTabComponent("/home/tab4","Tab4","",false)}
                 </div>
             </div>
-            <Link to={"/home"}>Hello</Link>
-
 
 
             <div className="overlay-container">
