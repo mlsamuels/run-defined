@@ -116,3 +116,37 @@ canvas{
   color: black;
   font-family: 'Inter', sans-serif;
 }
+
+.home-page-card{
+
+  width: 80%;
+  margin:auto;
+  overflow-wrap: break-word;
+}
+.home-card-container{
+  width:50%;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  align-content: flex-start;
+}
+
+p{
+  color:black;
+}
+
+h1{
+  color:black;
+}
+h2{
+  color:black;
+}
+h3{
+  color:black;
+}
+
+.challenge-list-text{
+  color: black;
+}
