@@ -2,8 +2,9 @@ import readline from 'readline'
 import {BiggerNumber} from "./bigger-number.js";
 import {TwentyOne} from "./twenty-one.js";
 import {Pythons} from "./pythons.js";
+import {Dodgeball} from "./dodgeball.js";
 
-const games=[BiggerNumber, TwentyOne, Pythons]
+const games=[BiggerNumber, TwentyOne, Pythons,Dodgeball]
 
 // Create an interface for input and output
 const rl = readline.createInterface({
@@ -48,10 +49,11 @@ const main = async () => {
     let gameObject  = new gameClass([player0, player1]);
     while(!gameObject.isEnded()){
         printVis(gameObject.viewGame())
+        console.log()
         await gameObject.nextTurn()
     }
     printVis(gameObject.viewGame())
-    console.log("Player "+(gameObject.getResults()[1]+1)+" Wins!")
+    console.log("Player "+(gameObject.getResults()[1])+" Wins!")
 
     // Close the readline interface
     rl.close();

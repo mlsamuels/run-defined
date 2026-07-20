@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import {BiggerNumber} from "./games/bigger-number.js";
 import {TwentyOne} from "./games/twenty-one.js";
 import {Pythons} from "./games/pythons.js";
+import {Dodgeball} from "./games/dodgeball.js";
 
 // import dns from "node:dns/promises";
 // dns.setServers(["1.1.1.1", "1.0.0.1"]);
@@ -102,7 +103,7 @@ ViteExpress.bind(app,server)
 
 
 //List of all games, index represents which number game it is
-const games=[BiggerNumber, TwentyOne, Pythons]
+const games=[BiggerNumber, TwentyOne, Pythons, Dodgeball]
 
 //Returns the full ordered leaderboard for a given game (Name, elo)
 async function getLeaderBoard(game){
