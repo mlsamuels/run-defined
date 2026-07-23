@@ -4,7 +4,6 @@ import {Game} from "./game.js";
 //Game Class for Pythons game
 export class Dodgeball extends Game{
 
-    //constrictor lol
     constructor(players) {
         super(players);
         if(players.length !==2){
@@ -70,6 +69,9 @@ export class Dodgeball extends Game{
 
         //Dodgeballs moving
         if(playerNum===2){
+            const newBoard = Array.from({ length: this.size[0] }, () => Array(this.size[0]).fill("0"));
+            newBoard[this.pLocs[0][0]][this.pLocs[0][1]]="P0"
+            newBoard[this.pLocs[1][0]][this.pLocs[1][1]]="P1"
             //Iterate over board updating balls
             for(let oldY=0;oldY<this.size[0];oldY++){
                 for(let oldX=0;oldX<this.size[1];oldX++){
@@ -88,36 +90,34 @@ export class Dodgeball extends Game{
                         continue;
                     }
 
-                    const newElement = this.board[newCoord[0]][newCoord[1]]
+                    const newElement = newBoard[newCoord[0]][newCoord[1]]
                     //Collision with ball
-                    if(newElement.charAt(0)==='B'){
-                        this.board[newCoord[0]][newCoord[1]]="0"
-                        this.board[oldY][oldX]="0"
+                    if(newElement.charAt(0)==='B' || newElement.charAt(0)==='C'){
+                        newBoard[newCoord[0]][newCoord[1]]="C"
                         continue
                     }
                     //Collision with player
                     if(newElement.charAt(0)==='P'){
                         const pNum = Number(newElement.charAt(1))
                         this.pLocs[pNum]=null
-                        this.board[newCoord[0]][newCoord[1]]="0"
-                        this.board[oldY][oldX]="0"
+                        newBoard[newCoord[0]][newCoord[1]]="C"
                         continue
                     }
 
                     //Normal
-                    this.board[newCoord[0]][newCoord[1]]="BM"+letter
-                    this.board[oldY][oldX]="0"
+                    newBoard[newCoord[0]][newCoord[1]]="B"+letter
                 }
             }
 
-            //Unmark balls as moved
+            //Remove Crash sites
             for(let y=0;y<this.size[0];y++) {
                 for (let x = 0; x < this.size[1]; x++) {
-                    if(this.board[y][x].charAt(1)==='M'){
-                        this.board[y][x]="B"+this.board[y][x].charAt(2)
+                    if(newBoard[y][x].charAt(0)==='C'){
+                        newBoard[y][x]="0";
                     }
                 }
             }
+            this.board=newBoard;
             this.turn++;
             return
         }
@@ -143,7 +143,7 @@ export class Dodgeball extends Game{
                 this.pLocs[playerNum]=null
             }
             //moved into ball
-            if(this.board[newCoord[0]][newCoord[1]].charAt(0)==='B'){
+            else if(this.board[newCoord[0]][newCoord[1]].charAt(0)==='B'){
                 this.pLocs[playerNum]=null
                 this.board[newCoord[0]][newCoord[1]]="0"
             }
