@@ -30,7 +30,7 @@ export default function HomePage(){
 
             <div className="home-tabs-container">
                 <div className="home-tabs">
-                    {homeTabComponent("/home","","/public/RD.svg",tabSelected(path)===1)}
+                    {homeTabComponent("/home","","/RD.svg",tabSelected(path)===1)}
                     {homeTabComponent("/home/challenges","Challenges","",tabSelected(path)===2)}
                     {homeTabComponent("/home/about","About","",tabSelected(path)===3)}
                     {homeTabComponent("/home/more","More","",tabSelected(path)===4)}
@@ -45,9 +45,6 @@ export default function HomePage(){
             <div className="home-card-container">
                 <Outlet/>
             </div>
-
-
-
         </div>
     );
 }
