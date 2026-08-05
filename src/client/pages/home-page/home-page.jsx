@@ -6,8 +6,6 @@ import {Outlet, useLocation} from 'react-router-dom'
 
 export default function HomePage(){
 
-
-
     const path =  useLocation().pathname
     const tabSelected = (path)=>{
         if(path.includes("/challenges")){
@@ -23,17 +21,16 @@ export default function HomePage(){
     }
 
 
-
     return (
         <div className="home-page">
             {homePageDots(conwayRule)}
 
             <div className="home-tabs-container">
                 <div className="home-tabs">
-                    {homeTabComponent("/home","","/RD.svg",tabSelected(path)===1)}
-                    {homeTabComponent("/home/challenges","Challenges","",tabSelected(path)===2)}
-                    {homeTabComponent("/home/about","About","",tabSelected(path)===3)}
-                    {homeTabComponent("/home/more","More","",tabSelected(path)===4)}
+                    {homeTabComponent("/","","/RD.svg",tabSelected(path)===1)}
+                    {homeTabComponent("/challenges","Challenges","",tabSelected(path)===2)}
+                    {homeTabComponent("/about","About","",tabSelected(path)===3)}
+                    {homeTabComponent("/more","More","",tabSelected(path)===4)}
                 </div>
             </div>
 

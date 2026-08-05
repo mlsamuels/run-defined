@@ -15,5 +15,5 @@ export default function editorComponent(defaultText, onChange) {
         return () => view.destroy();
     }, [defaultText]);
 
-    return <div ref={containerRef} />;
+    return <div id="editor" ref={containerRef} />;
 }

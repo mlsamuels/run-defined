@@ -139,8 +139,27 @@ export default function ChallengeView(){
 
     return (
         <div className="App">
-            <div className="card">
-                <Link to={"/"}><h1>RunDefined</h1></Link>
+
+            <div className="top-bar">
+                <Link to={"/"}><img className="home-tab-image" src={"/RD.svg"} alt={"hello?"} height={100}></img></Link>
+
+                <button className="button" onClick={testPress}>
+                    Test
+                </button>
+
+                <button className="button" onClick={submitPress}>
+                    Submit
+                </button>
+
+
+                <h2>Name:</h2>
+                <div>
+                    <input defaultValue={localStorage.getItem("name"+gameNum)} onChange={(event)=>{localStorage.setItem("name"+gameNum, event.target.value)}} />
+                </div>
+            </div>
+
+
+            <div className = "left-side">
                 <div>
                     <h2>Game {gameNum}:</h2>
                     <h3>
@@ -156,35 +175,13 @@ export default function ChallengeView(){
                 </div>
 
                 <div>
-                    <h2>Name:</h2>
-                    <div>
-                        <input defaultValue={localStorage.getItem("name"+gameNum)} onChange={(event)=>{localStorage.setItem("name"+gameNum, event.target.value)}} />
-                    </div>
+                    {userError}
                 </div>
-
-                <div>
-                    <h2>Code:</h2>
-                    <div id="editor-div">
-                        {editorComponent(defaultCode, onCodeChange)}
-                    </div>
-                </div>
-
-                <br/>
-                <button className="button" onClick={testPress}>
-                    Test
-                </button>
-                <button className="button" onClick={submitPress}>
-                    Submit
-                </button>
-
-                {testResultComponent(testCases, testResultData)}
 
                 <div>
                     {throbberComponent(throbbing)}
                 </div>
-                <div>
-                    {userError}
-                </div>
+
                 <div>
                     {leaderboardComponent(leaderBoardData)}
                 </div>
@@ -193,6 +190,17 @@ export default function ChallengeView(){
                     {gameResultComponent(visualization)}
                 </div>
             </div>
+
+            <div className="right-side">
+
+                <div id="editor-div">
+                    {editorComponent(defaultCode, onCodeChange)}
+                </div>
+
+
+                {testResultComponent(testCases, testResultData)}
+            </div>
+
         </div>
     );
 }

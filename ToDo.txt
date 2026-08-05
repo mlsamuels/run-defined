@@ -37,8 +37,8 @@ Site Design
 ✅Leaderboard
 ✅Tests Nice Looking
 ✅Automatic List of Challenges
-Homepage Nice Looking
-    Multiple tabs
+✅Homepage Nice Looking
+    ✅Multiple tabs
 
 ✅Throbber
 ✅Save code/name when reload

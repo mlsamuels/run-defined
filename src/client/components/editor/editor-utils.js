@@ -29,13 +29,16 @@ export function createEditor(target, initialDoc = "", onChange) {
     //CSS theme for editor
     let myTheme = EditorView.theme({
         "&": {
-            minWidth: "400px",
-            width: "fit-content",
-            margin: "0 auto"
-
+            minWidth: "95%",
+            width: "95%",
+            // width: "fit-content",
+            margin: "0 auto",
+            overflow: "auto",
+            height: "100%",
+            background: "#ffffff"
         },
         ".cm-scroller": { overflow: "auto" },
-        ".cm-content, .cm-gutter": { minHeight: "150px" }
+        ".cm-content, .cm-gutter": {  },
 
     }, {dark: false})
 
