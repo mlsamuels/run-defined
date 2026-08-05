@@ -7,7 +7,6 @@ MVP:
 ✅Simple ELO system
 Generalize
     ✅ Get Which Game Properly
-    Any number players
     ✅ Abstract function creation
     ✅ Get main.py from game file
     ✅ Add arguments to main.py
@@ -15,20 +14,19 @@ Generalize
 ✅Show results to user? (maybe just leaderboard for now)
     ✅Leaderboard
     ✅Game results
-Account for errors in code
-    Before adding to database
+✅Account for errors in code
     ✅During Game run
 
 Beyond:
 ✅Get game information
 ✅More Games
 ✅User can test code
-    Edit test cases
+
     ✅Display all test results
 
 ✅Decide Pages
 ✅Page navigation
-Site Design
+
 ✅Canvas/animations (Use same base system for both [flipdots??])
     ✅Ambient animations
     ✅Animate games
@@ -42,3 +40,12 @@ Site Design
 
 ✅Throbber
 ✅Save code/name when reload
+
+
+Site Design
+Refactor Backend
+Code Timeout
+Test Before adding to database
+Edit test cases
+MORE GAMES!!!
+Games with any number players
