@@ -80,6 +80,13 @@ canvas{
   gap: calc(0.5vw);
 }
 
+.challenge-tabs{
+
+  display: flex;
+  flex-direction: row;
+  gap: calc(0.5vw);
+}
+
 
 .home-tab{
   background-color: rgb(217 217 217 / 70%);
@@ -163,13 +170,14 @@ h3{
 }
 
 .top-bar{
-  width: 100%;
+  width: 90%;
 
   grid-area: 1 / 1 / 2 / 3;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
 }
 
 #editor-div{
@@ -198,4 +206,34 @@ h3{
   grid-area: 2 / 2 / 3 / 3;
   display: flex;
   flex-direction: column;
+}
+
+.challenge-name{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-result{
+  width: 100%;
+}
+
+.game-result>canvas{
+  width: 80%;
+}
+
+table{
+  height:100%;
+  overflow-y: auto
+}
+
+.leaderboard-container{
+  overflow-y: auto
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
 }

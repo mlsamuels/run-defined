@@ -36,7 +36,11 @@ export default function HomePage(){
 
 
             <div className="overlay-container">
-                <div className="overlay"></div>
+                <div className="overlay">
+
+                </div>
+
+
             </div>
 
             <div className="home-card-container">

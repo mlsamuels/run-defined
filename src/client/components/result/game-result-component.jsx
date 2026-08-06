@@ -1,10 +1,12 @@
 import DotArrayComponent from "../dots/dot-array-component.jsx";
 import {useState} from "react";
 
-export default function gameResultComponent(data){
+export default function GameResultComponent(props){
 
     const [pageNum, setPageNum] = useState(0)
     const [gameNum, setGameNum] = useState(0)
+
+    const data=props.data;
 
     if(data.length===0){
         return <div></div>;
@@ -29,11 +31,11 @@ export default function gameResultComponent(data){
     }
 
     return (
-        <div>
+        <div className="game-result">
             <div>game: {gameNum+1}/{data.length}</div>
             <div>{data[gameNum][3]===0?"*":""}{data[gameNum][1]} vs. {data[gameNum][3]===1?"*":""}{data[gameNum][2]}</div>
             <div>page: {pageNum+1}/{data[gameNum][0].length}</div>
-            <DotArrayComponent
+            <DotArrayComponent className="game-result"
                 width={data[0][0][0][0].length}
                 height={data[0][0][0].length}
                 values={representationToColors(data[gameNum][0][pageNum])}

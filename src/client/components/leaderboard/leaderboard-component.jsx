@@ -6,17 +6,16 @@ export default function leaderboardComponent(data){
     }
 
     const dataToHTML=()=>{
-        console.log(data[0])
         return (<table>
             <thead><tr><th>Name</th><th>Elo</th></tr></thead>
             <tbody>
-            {data.map((entry)=>(<tr><th>{entry.name}</th><th>{(parseInt(entry.elo))}</th></tr>))}
+            {data.map((entry)=>(<tr><td>{entry.name}</td><td>{(parseInt(entry.elo))}</td></tr>))}
             </tbody>
             </table>)
 
     }
 
     return (
-        <div>{dataToHTML(data)}</div>
+        <div className="leaderboard-container">{dataToHTML(data)}</div>
     );
 }

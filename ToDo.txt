@@ -43,6 +43,9 @@ Beyond:
 
 
 Site Design
+    Challenge tabs
+Dark Mode
+Mobile?
 Refactor Backend
 Code Timeout
 Test Before adding to database
