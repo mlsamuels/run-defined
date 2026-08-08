@@ -32,9 +32,7 @@ app.get("/gameinfo/:game", async (req, res) => {
   const game = req.params.game;
   if(game<games.length){
     let info = games[game].getInfo()
-    await getLeaderBoard(game).then((data)=>{console.log(data)})
     info.leaderBoard= await getLeaderBoard(Number(game))
-    console.log(await info)
     res.send(JSON.stringify(info))
   }
   else{

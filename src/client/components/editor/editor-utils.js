@@ -1,4 +1,5 @@
-import {EditorState} from "@codemirror/state"
+import {EditorState, Compartment} from "@codemirror/state"
+import { oneDark } from "@codemirror/theme-one-dark"
 import { python } from "@codemirror/lang-python"
 import {
     EditorView, keymap, highlightSpecialChars, drawSelection,
@@ -26,6 +27,9 @@ export function createEditor(target, initialDoc = "", onChange) {
     //Ensures target is empty
     if (target.innerHTML !== "") target.innerHTML = "";
 
+    const themeCompartment = new Compartment();
+    const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     //CSS theme for editor
     let myTheme = EditorView.theme({
         "&": {
@@ -35,17 +39,24 @@ export function createEditor(target, initialDoc = "", onChange) {
             margin: "0 auto",
             overflow: "auto",
             height: "100%",
-            background: "#ffffff"
         },
         ".cm-scroller": { overflow: "auto" },
         ".cm-content, .cm-gutter": {  },
 
-    }, {dark: false})
+    })
+    let lightTheme = EditorView.theme({
+        "&": {
+            background: "#ffffff"
+        }
+    })
+
+
 
     return new EditorView({
         doc: initialDoc,
         //Extension list provides functionality for editor
         extensions: [
+            themeCompartment.of(isSystemDark ? oneDark : lightTheme),
             python(),
             myTheme,
             EditorView.updateListener.of((update) => {

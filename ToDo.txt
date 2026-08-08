@@ -42,13 +42,14 @@ Beyond:
 ✅Save code/name when reload
 
 
-Site Design
-    Challenge tabs
+✅Site Design
+    ✅Challenge tabs
 Dark Mode
 Mobile?
 Refactor Backend
 Code Timeout
 Test Before adding to database
 Edit test cases
+Simulate
 MORE GAMES!!!
 Games with any number players
