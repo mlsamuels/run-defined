@@ -14,6 +14,6 @@ export default function homePageDots(dotRules){
     }, []);
 
     return(<div className="home-page-dots">
-        <DotArrayComponent width={45} height={32} values={array}/>
+        <DotArrayComponent width={45} height={21} values={array}/>
     </div>)
 }
