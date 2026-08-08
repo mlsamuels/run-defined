@@ -28,10 +28,14 @@ const gameZeroSubmissions = db.collection("gameZeroSubmissions");
 app.use(express.json());
 
 //get the info for a specific game to display instructions
-app.get("/gameinfo/:game", (req, res) => {
+app.get("/gameinfo/:game", async (req, res) => {
   const game = req.params.game;
   if(game<games.length){
-    res.send(games[game].getInfo())
+    let info = games[game].getInfo()
+    await getLeaderBoard(game).then((data)=>{console.log(data)})
+    info.leaderBoard= await getLeaderBoard(Number(game))
+    console.log(await info)
+    res.send(JSON.stringify(info))
   }
   else{
     res.status(400).json({"error":"Game not found"});
@@ -41,6 +45,7 @@ app.get("/gameinfo/:game", (req, res) => {
 app.get("/gamelist", (req, res) => {
   res.send(JSON.stringify(games.map((game) => game.getInfo()["name"])))
 })
+
 
 //post for testing code
 app.post("/testfunction", async (req, res) => {

@@ -79,7 +79,6 @@ export default function ChallengeView(){
         setTestResultData([])
         setThrobbing(true)
         try {
-            //setLeaderBoardData("Waiting for Leader Board...");
             setVisualization([]);
             const response = await fetch('/submitfunction', {
                 method: 'POST',
@@ -122,7 +121,6 @@ export default function ChallengeView(){
 
             setTestCases(result.defaultTests)
 
-
             const prevCode = localStorage.getItem("code"+gameNum)
             if(prevCode ===undefined ||prevCode===null || prevCode===""){
                 localStorage.setItem("code"+gameNum, result.defaultCode)
@@ -131,14 +129,10 @@ export default function ChallengeView(){
 
             setGameName(result.name);
             setDescriptionText(result.description);
-            setLeaderBoardData("")
+            setLeaderBoardData(result["leaderBoard"])
         } catch (err) {
             console.log(err);
         }
-    }
-
-    const getLeaderBoardData = ()=>{
-
     }
 
 
@@ -189,16 +183,13 @@ export default function ChallengeView(){
                     </h3>
                 </div>}
 
-                <div>
-                    {userError}
-                </div>
-
-
-
                 {tab===1&&leaderboardComponent(leaderBoardData)}
 
                 {tab===2&&
                 <div>
+                    <div>
+                        {userError}
+                    </div>
                     <ThrobberComponent enabled={throbbing}/>
                     <GameResultComponent data={visualization}/>
                 </div>}
