@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 
 export default function homePageDots(dotRules){
 
-    const [array, setArray] = useState(()=>dotRules.defaultArray(32,45));
+    const [array, setArray] = useState(()=>dotRules.defaultArray(21,45));
 
     useEffect(() => {
         const intervalId = setInterval(() => {

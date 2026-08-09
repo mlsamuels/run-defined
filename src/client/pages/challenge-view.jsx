@@ -24,7 +24,7 @@ export default function ChallengeView(){
     //Test Cases
     const [testCases, setTestCases] = useState([]);
 
-    const [userError, setUserError] = useState("");
+    const [userError, setUserError] = useState("Submit your code to see results!");
 
     //LeaderBoard
     const [leaderBoardData, setLeaderBoardData] = useState("");

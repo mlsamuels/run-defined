@@ -44,12 +44,12 @@ Beyond:
 
 ✅Site Design
     ✅Challenge tabs
-Dark Mode
+✅Dark Mode
 Mobile?
-Refactor Backend
-Code Timeout
-Test Before adding to database
-Edit test cases
+✅Refactor Backend
+*Code Timeout
+*Test Before adding to database
+*Edit test cases
 Simulate
 MORE GAMES!!!
 Games with any number players

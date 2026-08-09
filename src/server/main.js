@@ -1,37 +1,28 @@
 import express from "express";
 import ViteExpress from "vite-express";
-import fs from "fs";
-import Docker from "dockerode";
-const docker = new Docker();
 
-import mongoose from "mongoose"
-import dotenv from "dotenv";
-import {BiggerNumber} from "./games/bigger-number.js";
-import {TwentyOne} from "./games/twenty-one.js";
-import {Pythons} from "./games/pythons.js";
-import {Dodgeball} from "./games/dodgeball.js";
+import DatabaseConnection from "./database-connection.js"
+import gameList from "./games/game-list.js";
+import runCode from "./python-runner.js"
 
 // import dns from "node:dns/promises";
 // dns.setServers(["1.1.1.1", "1.0.0.1"]);
+//Weird fix sometimes
 
-dotenv.config();
 
 const app = express();
 
 //Database connection
-await mongoose.connect(process.env.MONGODB_URI, {});
-
-const db = mongoose.connection;
-db.on("error", (err) => console.log(err));
-const gameZeroSubmissions = db.collection("gameZeroSubmissions");
+const db = new DatabaseConnection()
+db.connect()
 
 app.use(express.json());
 
 //get the info for a specific game to display instructions
 app.get("/gameinfo/:game", async (req, res) => {
   const game = req.params.game;
-  if(game<games.length){
-    let info = games[game].getInfo()
+  if(game<gameList().length){
+    let info = gameList()[game].getInfo()
     info.leaderBoard= await getLeaderBoard(Number(game))
     res.send(JSON.stringify(info))
   }
@@ -41,9 +32,8 @@ app.get("/gameinfo/:game", async (req, res) => {
 });
 
 app.get("/gamelist", (req, res) => {
-  res.send(JSON.stringify(games.map((game) => game.getInfo()["name"])))
+  res.send(JSON.stringify(gameList().map((game) => game.getInfo()["name"])))
 })
-
 
 //post for testing code
 app.post("/testfunction", async (req, res) => {
@@ -55,7 +45,7 @@ app.post("/testfunction", async (req, res) => {
   for(let i =0; i<tests.length;i++){
     const t = tests[i];
 
-    const result= await runCode(code, games[game].getCode(), t)
+    const result= await runCode(code, gameList()[game].getCode(), t)
     testResults.push(result)
   }
 
@@ -64,18 +54,16 @@ app.post("/testfunction", async (req, res) => {
 
 //post for submitting code and adding to leaderboard
 app.post("/submitfunction", async (req, res) => {
-
   const code = req.body.code;
   const name = req.body.name;
   const game = req.body.game;
-
 
   //check if name in use
   if(name===""){
     res.status(400).json({"error":"Must have name"});
     return
   }
-  const existing = await gameZeroSubmissions.findOne({name: name, game:game})
+  const existing = await db.findOne({name: name, game:game})
   if(existing){
     res.status(409).json({"error":"Name in use"});
     return
@@ -85,7 +73,7 @@ app.post("/submitfunction", async (req, res) => {
   console.log(name +" has been entered!")
 
   //add to database
-  const insert_result = await gameZeroSubmissions.insertOne({name: name, code: code, elo: 1500, game:game})
+  const insert_result = await db.insertOne({name: name, code: code, elo: 1500, game:game})
   const id = insert_result.insertedId;
 
   const visualizations=await playGames(id, 5)
@@ -105,12 +93,9 @@ const server = app.listen(PORT, "0.0.0.0", () => {
 ViteExpress.bind(app,server)
 
 
-//List of all games, index represents which number game it is
-const games=[BiggerNumber, TwentyOne, Pythons, Dodgeball]
-
 //Returns the full ordered leaderboard for a given game (Name, elo)
 async function getLeaderBoard(game){
-  const leaderBoard = await gameZeroSubmissions.aggregate([
+  return db.aggregate([
     { $match: { game: game}},
     { $sort: { elo: -1 } },
     {$project: {
@@ -118,19 +103,18 @@ async function getLeaderBoard(game){
         name: 1,
         elo: 1
       }}
-  ])
-  return leaderBoard.toArray();
+  ]);
 }
 
 //plays a number of games with the submission of id, updates elo accordingly
 async function playGames(id, count){
-  let p0 = await gameZeroSubmissions.findOne({_id: id})
+  let p0 = await db.findOne({_id: id})
   const visualizations=[]
   const modifierInfluence = 50
   let modifier=0;
   for (let i = 0; i < count; i++) {
     //Find matches nearby
-    const searchResult= await gameZeroSubmissions.aggregate([
+    const searchResult= await db.aggregate([
       {
         $addFields: {
           diff: { $abs: { $subtract: ["$elo", p0.elo+modifier*modifierInfluence] } }
@@ -139,7 +123,7 @@ async function playGames(id, count){
       { $match: { _id: { $ne: id}, game: p0.game}},
       { $sort: { diff: 1 } },
       { $limit: 1 }
-    ]).toArray();
+    ]);
     if(searchResult.length === 0){
       break
     }
@@ -147,7 +131,7 @@ async function playGames(id, count){
     const p1= searchResult[0];
     visualizations.push(await playGame(p0,p1))
     const oldElo = p0.elo
-    p0 = await gameZeroSubmissions.findOne({_id: id})
+    p0 = await db.findOne({_id: id})
     const newElo = p0.elo
     modifier+= Math.sign(newElo-oldElo)
   }
@@ -156,10 +140,10 @@ async function playGames(id, count){
 
 //plays a number of games between random opponents
 async function playRand(game, count){
-  const searchResult= await gameZeroSubmissions.aggregate([
+  const searchResult= await db.aggregate([
     { $match: {game: game}},
     { $sample: { size: 2 } }
-  ]).toArray();
+  ]);
   if(searchResult.length<2){
     return;
   }
@@ -180,10 +164,10 @@ async function playGame(p0, p1){
 
 
   //make player functions
-  const  player0Function=makePlayerFunction(p0.code, games[game].getCode())
-  const  player1Function=makePlayerFunction(p1.code, games[game].getCode())
+  const  player0Function=makePlayerFunction(p0.code, gameList()[game].getCode())
+  const  player1Function=makePlayerFunction(p1.code, gameList()[game].getCode())
 
-  const gameInstance = new games[game]([player0Function,player1Function]);
+  const gameInstance = new (gameList()[game])([player0Function,player1Function]);
   const visualization = await gameInstance.playAll()
 
 
@@ -192,8 +176,8 @@ async function playGame(p0, p1){
   const eloChange=eloUpdate(p0.elo,p1.elo,result);
 
   //update elos
-  await gameZeroSubmissions.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
-  await gameZeroSubmissions.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
+  await db.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
+  await db.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
 
   console.log(p0.name+" vs. "+p1.name)
   return [visualization,p0.name,p1.name,result];
@@ -213,89 +197,6 @@ function makePlayerFunction(playerCode, gameCode){
     }
 
     return output[0].split(/\r?\n/).at(-2);
-  }
-}
-
-//Replaces maincode with replacements and runs code, returning results
-async function runCode(scriptCode, mainCode,replacements){
-  const mainCodeArgs = stringReplace(mainCode, replacements)
-  try {
-    fs.writeFileSync("python_scripts/script.py", scriptCode);
-    fs.writeFileSync("python_scripts/main.py", mainCodeArgs);
-  } catch (err) {
-    console.error('Error writing file:', err);
-  }
-  return await startContainer()
-}
-
-//Replaces instances of {0}, {1} ... in a string with the elements of replacements
-function stringReplace(string, replacements){
-  for (let i= 0; i< replacements.length; i++){
-    const regex= new RegExp("\\{"+i+"\\}");
-    string = string.replace(regex, replacements[i]);
-  }
-  return string;
-}
-
-//Run python code and get results
-//Uses whatever code is in main.py and script.py
-async function startContainer() {
-  try {
-    // Create container
-    const container = await docker.createContainer({
-      Image: 'python:3.12-slim',
-      Cmd: ['python','-u' ,'/app/main.py'],
-      HostConfig: {
-        Binds: [`${process.cwd()}/python_scripts/script.py:/app/script.py`,
-                `${process.cwd()}/python_scripts/main.py:/app/main.py`],
-        AutoRemove: false,
-        Tty: true
-      }
-    });
-
-    //Get python code results
-    await container.start();
-    await container.wait();
-
-    const logs = await container.logs({
-      stdout: true,
-      stderr: true
-    });
-    await container.remove();
-
-    let offset = 0;
-    let stdout = '';
-    let stderr = '';
-
-    //Parse buffer
-    while (offset < logs.length) {
-      // byte 0 = stream type (1=stdout, 2=stderr)
-      // bytes 1-3 = unused
-      // bytes 4-7 = length
-      const type = logs.readUInt8(offset)
-      const length = logs.readUInt32BE(offset + 4);
-
-      //extract log
-      const start = offset + 8;
-      const end = start + length;
-
-      if (end > logs.length) break; // safety guard
-
-      const chunk = logs.slice(start, end);
-      if(type===1) {
-        stdout += chunk.toString();
-      }
-      else{
-        stderr += chunk.toString();
-      }
-
-      offset += 8 + length;
-    }
-
-    return [stdout,stderr];
-
-  } catch (err) {
-    console.error('Failed to start container:', err);
   }
 }
 
