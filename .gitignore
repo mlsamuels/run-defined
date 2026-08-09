@@ -26,5 +26,6 @@ dist-ssr
 
 # Python files
 /python_scripts/script.py
+/python_scripts/main.py
 
 .env
