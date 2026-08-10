@@ -15,6 +15,7 @@ export default async function runCode(scriptCode, mainCode,replacements){
     return await Promise.race([startContainer(), timeOutFunction()])
 }
 
+//Function to race against for timeout, returns error if timeout wins
 async function timeOutFunction(){
     return new Promise(resolve=>{
         setTimeout(()=>{
@@ -31,7 +32,6 @@ function stringReplace(string, replacements){
     }
     return string;
 }
-
 
 //Run python code and get results
 //Uses whatever code is in main.py and script.py
