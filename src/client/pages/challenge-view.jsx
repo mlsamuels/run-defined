@@ -74,6 +74,8 @@ export default function ChallengeView(){
 
     //Pressing the submit button
     const submitPress = async () => {
+        setTab(2)
+
         setUserError("")
         setTestResultData([])
         setThrobbing(true)

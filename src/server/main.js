@@ -5,7 +5,6 @@ import DatabaseConnection from "./database-connection.js"
 import gameList from "./games/game-list.js";
 import runCode from "./python-runner.js"
 
-
 const app = express();
 
 //Database connection
