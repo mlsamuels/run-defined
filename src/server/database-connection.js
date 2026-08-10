@@ -10,24 +10,24 @@ export default class DatabaseConnection {
 
         const db = mongoose.connection;
         db.on("error", (err) => console.log(err));
-        this.challengeSubmissions = db.collection("gameZeroSubmissions");
+        this.collection = db.collection("gameZeroSubmissions");
         this.connected=true
     }
 
     async aggregate(input){
-        return this.challengeSubmissions.aggregate(input).toArray();
+        return this.collection.aggregate(input).toArray();
     }
 
     async findOne(input){
-        return this.challengeSubmissions.findOne(input);
+        return this.collection.findOne(input);
     }
 
     async updateOne(input1, input2){
-        return this.challengeSubmissions.updateOne(input1, input2)
+        return this.collection.updateOne(input1, input2)
     }
 
     async insertOne(input){
-        return this.challengeSubmissions.insertOne(input);
+        return this.collection.insertOne(input);
     }
 
 }

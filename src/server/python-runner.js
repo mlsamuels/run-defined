@@ -11,7 +11,16 @@ export default async function runCode(scriptCode, mainCode,replacements){
     } catch (err) {
         console.error('Error writing file:', err);
     }
-    return await startContainer()
+
+    return await Promise.race([startContainer(), timeOutFunction()])
+}
+
+async function timeOutFunction(){
+    return new Promise(resolve=>{
+        setTimeout(()=>{
+            resolve(["","Error, time limit exceeded"])
+        },5000)
+    })
 }
 
 //Replaces instances of {0}, {1} ... in a string with the elements of replacements
