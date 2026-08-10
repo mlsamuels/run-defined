@@ -1,10 +1,17 @@
 import mongoose from "mongoose"
 import dotenv from "dotenv";
+import dns from "node:dns/promises";
+
 
 export default class DatabaseConnection {
 
     async connect() {
         dotenv.config();
+
+        //fix that is only sometimes needed
+        if (process.env.DNS_SERVERS) {
+            dns.setServers(process.env.DNS_SERVERS.split(","));
+        }
 
         await mongoose.connect(process.env.MONGODB_URI, {});
 

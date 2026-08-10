@@ -5,10 +5,6 @@ import DatabaseConnection from "./database-connection.js"
 import gameList from "./games/game-list.js";
 import runCode from "./python-runner.js"
 
-// import dns from "node:dns/promises";
-// dns.setServers(["1.1.1.1", "1.0.0.1"]);
-//Weird fix sometimes
-
 
 const app = express();
 
