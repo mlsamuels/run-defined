@@ -77,7 +77,6 @@ app.post("/submitfunction", async (req, res) => {
   const id = insert_result.insertedId;
 
   const visualizations=await playGames(id, 5)
-  await playRand(game, 5)
 
   const leaderBoard = await getLeaderBoard(game)
   res.send({"leaderBoard":JSON.stringify(leaderBoard), "visualizations": JSON.stringify(visualizations)});
