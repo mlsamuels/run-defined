@@ -45,7 +45,7 @@ async function startContainer() {
                 Binds: [`${process.cwd()}/python_scripts/script.py:/app/script.py`,
                     `${process.cwd()}/python_scripts/main.py:/app/main.py`],
                 AutoRemove: false,
-                Tty: true
+                Tty: false
             }
         });
 

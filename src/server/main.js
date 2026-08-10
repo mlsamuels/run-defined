@@ -65,7 +65,12 @@ app.post("/submitfunction", async (req, res) => {
     return
   }
 
-  //TODO Make sure code works before adding to database
+  const testResult = await runCode(code, gameList()[game].getCode(), gameList()[game].getInfo()["defaultTests"][0])
+  if(testResult[1]!==""){
+    res.status(400).json({"error":"Errors in code run, please test your code first"});
+    return
+  }
+
   console.log(name +" has been entered!")
 
   //add to database
