@@ -48,7 +48,7 @@ Beyond:
 Mobile?
 ✅Refactor Backend
 ✅Code Timeout
-*Test Before adding to database
+✅Test Before adding to database
 *Edit test cases
 Simulate
 MORE GAMES!!!

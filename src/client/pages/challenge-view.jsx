@@ -36,7 +36,6 @@ export default function ChallengeView(){
     //Tabs
     const [tab, setTab] =  useState(0);
 
-
     //initialization code
     useEffect( () => {
         changeGame(gameNum)
@@ -135,7 +134,6 @@ export default function ChallengeView(){
         }
     }
 
-
     //Callback function for code editor
     const onCodeChange = (newText) => {
         localStorage.setItem("code"+gameNum,newText);
@@ -143,7 +141,6 @@ export default function ChallengeView(){
 
     return (
         <div className="App">
-
             <div className="top-bar">
                 <Link to={"/"}><img className="home-tab-image" src={"/RD.svg"} alt={"hello?"} height={100}></img></Link>
 
