@@ -205,6 +205,37 @@ h3{
   width: 100%;
 }
 
+.test-result-component{
+  width: 95%;
+  height: 45%;
+  background-color: var(--grey-2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  overflow: auto;
+}
+
+.run-result-component{
+  width: 95%;
+
+  border-radius: 10px;
+  padding: 0 10px 10px;
+}
+
+.run-result-normal{
+  border: 1px solid black;
+  background: white;
+}
+.run-result-error{
+  background-color: pink;
+}
+
 .left-side{
   grid-area: 2 / 1 / 3 / 2;
   display: flex;
@@ -217,6 +248,7 @@ h3{
   grid-area: 2 / 2 / 3 / 3;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .challenge-name{

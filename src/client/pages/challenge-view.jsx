@@ -32,6 +32,7 @@ export default function ChallengeView(){
     const [visualization, setVisualization] =  useState([])
 
     const [throbbing, setThrobbing] =  useState(false)
+    const [testThrobbing, setTestThrobbing] =  useState(false)
 
     //Tabs
     const [tab, setTab] =  useState(0);
@@ -44,8 +45,7 @@ export default function ChallengeView(){
 
     //Pressing the test button
     const testPress = async () => {
-        setUserError("")
-        setThrobbing(true)
+        setTestThrobbing(true)
         setTestResultData([]);
         try {
             const response = await fetch('/testfunction', {
@@ -68,7 +68,7 @@ export default function ChallengeView(){
         } catch (err) {
             console.log(err);
         }
-        setThrobbing(false)
+        setTestThrobbing(false)
 
     }
 
@@ -77,7 +77,6 @@ export default function ChallengeView(){
         setTab(2)
 
         setUserError("")
-        setTestResultData([])
         setThrobbing(true)
         try {
             setVisualization([]);
@@ -202,7 +201,7 @@ export default function ChallengeView(){
                 </div>
 
 
-                {testResultComponent(testCases, testResultData)}
+                {testResultComponent(testCases, testResultData, testThrobbing)}
             </div>
 
         </div>
