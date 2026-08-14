@@ -43,6 +43,7 @@ export default function GameResultComponent(props){
             <br></br>
             <button onClick={()=>{buttonClick(true,false)}}>Prev Turn</button>
             <button onClick={()=>{buttonClick(false,false)}}>Next Turn</button>
+            <br></br>
             <button onClick={()=>{buttonClick(true,true)}}>Prev Game</button>
             <button onClick={()=>{buttonClick(false,true)}}>Next Game</button>
         </div>

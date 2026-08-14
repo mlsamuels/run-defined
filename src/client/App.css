@@ -131,11 +131,14 @@ canvas{
 }
 
 .home-page-card{
-
   width: 80%;
   margin:auto;
   overflow-wrap: break-word;
 }
+.card{
+  width: 80%;
+}
+
 .home-card-container{
   width:50%;
   position: absolute;
@@ -244,4 +247,8 @@ th {
   position: sticky;
   top: 0;
   background-color: var(--white);
+}
+
+p{
+  text-align: left;
 }

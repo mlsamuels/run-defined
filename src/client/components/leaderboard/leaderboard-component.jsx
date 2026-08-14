@@ -16,6 +16,6 @@ export default function leaderboardComponent(data){
     }
 
     return (
-        <div className="leaderboard-container">{dataToHTML(data)}</div>
+        <div className="leaderboard-container ">{dataToHTML(data)}</div>
     );
 }

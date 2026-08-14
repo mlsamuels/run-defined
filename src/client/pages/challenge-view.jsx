@@ -148,11 +148,11 @@ export default function ChallengeView(){
 
                 <div>
                     <button className="button" onClick={testPress}>
-                        Test
+                        <b>Test</b>
                     </button>
 
                     <button className="button" onClick={submitPress}>
-                        Submit
+                        <b>Submit</b>
                     </button>
                 </div>
 
@@ -173,19 +173,19 @@ export default function ChallengeView(){
                     {challengeTabComponent("Simulate",tab===3,  ()=>{setTab(3)})}
                 </div>
 
-                {tab===0&&<div>
+                {tab===0&&<div className = "card">
                     <h2>Game {gameNum}: {gameName}</h2>
 
                     <h2>Description:</h2>
-                    <h3>
+                    <p>
                         {descriptionText}
-                    </h3>
+                    </p>
                 </div>}
 
                 {tab===1&&leaderboardComponent(leaderBoardData)}
 
                 {tab===2&&
-                <div>
+                <div className = "card">
                     <div>
                         {userError}
                     </div>

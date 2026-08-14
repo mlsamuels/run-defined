@@ -28,7 +28,7 @@ export default function HomeChallengesPage(){
         }
     }
     return (
-        <div>
+        <div className = "home-page-card">
             <h2>Challenge List</h2>
             <div>{gameList.map((value, index)=>(<div key={index} className="challenge-list-element"><Link to={"/challenge/"+index}><p className="challenge-list-text">{index+". "+value}</p></Link></div>))}</div>
         </div>
