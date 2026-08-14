@@ -19,6 +19,7 @@ body,
   --grey-2: light-dark(#d9d9d9, #262626);
   --grey-3: light-dark(#c8c8c8, #373737);
   --black: light-dark(#000000, #ffffff);
+  --pink: light-dark(#ffbdc8,#42000b);
 
 }
 
@@ -230,10 +231,10 @@ h3{
 
 .run-result-normal{
   border: 1px solid black;
-  background: white;
+  background: var(--white);
 }
 .run-result-error{
-  background-color: pink;
+  background-color: var(--pink);
 }
 
 .left-side{
