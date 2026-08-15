@@ -26,9 +26,29 @@ app.get("/gameinfo/:game", async (req, res) => {
   }
 });
 
+//get list of all games
 app.get("/gamelist", (req, res) => {
   res.send(JSON.stringify(gameList().map((game) => game.getInfo()["name"])))
 })
+
+app.post("/simulategame", async (req, res) => {
+  const game = req.body.game;
+  const p0name = req.body.p0;
+  const p1name = req.body.p1;
+
+  const p0= await db.findOne({name: p0name, game:game});
+  const p1 = await db.findOne({name: p1name, game:game});
+
+  if(!p0||!p1){
+    res.status(400).json({"error":"Submission name not found"});
+    return;
+  }
+
+  const visualization = await playGame(p0,p1)
+
+  res.send({"visualization": JSON.stringify(visualization)});
+
+});
 
 //post for testing code
 app.post("/testfunction", async (req, res) => {
