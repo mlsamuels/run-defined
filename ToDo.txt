@@ -51,7 +51,7 @@ Mobile?
 ✅Test Before adding to database
 ✅Test cases look nice
 Edit test cases
-Simulate
+✅Simulate
 MORE GAMES!!!
 Games with any number players
 ✅More/About
