@@ -54,7 +54,7 @@ export class BiggerNumber extends Game{
 
     static getInfo(){
         return {"name":"Bigger Number",
-                "description":"In this game, two agents will try and think of a bigger number. Return the bigger number to win.",
+                "description":"In this game, two players will try and think of a bigger number. Return the bigger number to win.",
                 "defaultCode": defaultCode,
                 "defaultTests": [[]]}
     }

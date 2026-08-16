@@ -16,7 +16,6 @@ export class Dodgeball extends Game{
         this.pLocs=[[Math.floor(this.size[0]/2-1),Math.floor(this.size[1]/4-1)],[Math.floor(this.size[0]/2),Math.floor(this.size[1]*3/4)]]
         this.board[this.pLocs[0][0]][this.pLocs[0][1]]="P0"
         this.board[this.pLocs[1][0]][this.pLocs[1][1]]="P1"
-
     }
 
     isEnded(){
@@ -189,7 +188,7 @@ export class Dodgeball extends Game{
 
     static getInfo(){
         return {"name":"Dodgeball",
-            "description":"In this game, two agents will",
+            "description":"In this game, two players will take turns choosing to either move their character or throw a dodgeball. First player one moves, then player two moves, then all the dodgeballs move in the direction they're pointing. If a dodgeball hits a wall, it will turn around. If a player hits a dodgeball or a wall, they lose. If two dodgeballs hit each other, they disappear. On your turn return two characters, 'M' or 'T' to move or throw, and 'U', 'D', 'L', or 'R' for up, down, left, or right. So \"MU\" would move up and \"TL\" would throw left. board is a 2D list of strings where \"0\" is nothing, \"P0\" is your player, \"P1\" is the enemy player, and \"BX\" is a ball moving in direction X. (0,0) is the top left of the board. coords[0] has your coordinates, coords[1] has your opponents coordinates. ",
             "defaultCode": defaultCode,
             "defaultTests": [["[[\"0\",\"0\",\"0\",\"0\"],[\"P0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"P1\"],[\"0\",\"0\",\"0\",\"0\"]]","[[1,0],[2,3]]"],
                 ["[[\"0\",\"0\",\"0\",\"0\"],[\"BU\",\"P1\",\"0\",\"0\"],[\"0\",\"0\",\"P0\",\"BL\"],[\"0\",\"0\",\"0\",\"0\"]]","[[2,2],[1,1]]"]]}
