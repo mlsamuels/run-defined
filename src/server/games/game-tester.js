@@ -1,10 +1,9 @@
 import readline from 'readline'
-import {BiggerNumber} from "./bigger-number.js";
-import {TwentyOne} from "./twenty-one.js";
-import {Pythons} from "./pythons.js";
-import {Dodgeball} from "./dodgeball.js";
 
-const games=[BiggerNumber, TwentyOne, Pythons,Dodgeball]
+
+import gameList from "./game-list.js";
+
+const games= gameList();
 
 // Create an interface for input and output
 const rl = readline.createInterface({

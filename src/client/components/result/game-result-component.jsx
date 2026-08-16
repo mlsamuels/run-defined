@@ -32,7 +32,7 @@ export default function GameResultComponent(props){
 
     return (
         <div className="game-result">
-            <div>game: {gameNum+1}/{data.length}</div>
+            {data.length!==1&&<div>game: {gameNum+1}/{data.length}</div>}
             <div>{data[gameNum][3]===0?"*":""}{data[gameNum][1]} vs. {data[gameNum][3]===1?"*":""}{data[gameNum][2]}</div>
             <div>page: {pageNum+1}/{data[gameNum][0].length}</div>
             <DotArrayComponent className="game-result"
@@ -44,8 +44,8 @@ export default function GameResultComponent(props){
             <button onClick={()=>{buttonClick(true,false)}}>Prev Turn</button>
             <button onClick={()=>{buttonClick(false,false)}}>Next Turn</button>
             <br></br>
-            <button onClick={()=>{buttonClick(true,true)}}>Prev Game</button>
-            <button onClick={()=>{buttonClick(false,true)}}>Next Game</button>
+            {data.length!==1&& <button onClick={()=>{buttonClick(true,true)}}>Prev Game</button>}
+            {data.length!==1&&<button onClick={()=>{buttonClick(false,true)}}>Next Game</button>}
         </div>
     );
 }

@@ -34,6 +34,14 @@ export default function ChallengeView(){
     const [throbbing, setThrobbing] =  useState(false)
     const [testThrobbing, setTestThrobbing] =  useState(false)
 
+    //Simulate
+    const [simulateThrobbing, setSimulateThrobbing] = useState(false)
+    const [simulateVisualization, setSimulateVisualization] = useState([])
+    const [simulateError, setSimulateError]= useState("")
+
+    const [simulateNameZero, setSimulateNameZero] = useState("")
+    const [simulateNameOne, setSimulateNameOne] = useState("")
+
     //Tabs
     const [tab, setTab] =  useState(0);
 
@@ -104,6 +112,34 @@ export default function ChallengeView(){
             console.log(err);
         }
         setThrobbing(false)
+    }
+
+    const simulatePress = async () => {
+        setSimulateError("")
+        setSimulateThrobbing(true)
+        try {
+            setSimulateVisualization([]);
+            const response = await fetch('/simulategame', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    "game": gameNum,
+                    "p0": simulateNameZero,
+                    "p1": simulateNameOne
+                }),
+            });
+            console.log(response)
+            if (!response.ok) {
+                setSimulateError((await response.json())["error"])
+                throw new Error('Network response was not ok');
+            }
+            const result = await response.json();
+
+            setSimulateVisualization(JSON.parse(result["visualization"]))
+        } catch (err) {
+            console.log(err);
+        }
+        setSimulateThrobbing(false)
     }
 
     //Switching the gameNum to a different game, gets information and updates code editor
@@ -191,6 +227,25 @@ export default function ChallengeView(){
                     <ThrobberComponent enabled={throbbing}/>
                     <GameResultComponent data={visualization}/>
                 </div>}
+
+                {tab===3&&
+                    <div className = "card">
+                        <div>
+                            {simulateError}
+                        </div>
+
+                        <GameResultComponent data={simulateVisualization}/>
+                        <h3>Player Zero</h3>
+                        <input  onChange={(event)=>{setSimulateNameZero(event.target.value)}} />
+                        <h3>Player One</h3>
+                        <input  onChange={(event)=>{setSimulateNameOne(event.target.value)}} />
+                        <br/>
+                        <button className="button" onClick={simulatePress}>
+                            <b>Simulate</b>
+                        </button>
+
+                        <ThrobberComponent enabled={simulateThrobbing}/>
+                    </div>}
 
             </div>
 

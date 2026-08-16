@@ -44,7 +44,7 @@ app.post("/simulategame", async (req, res) => {
     return;
   }
 
-  const visualization = await playGame(p0,p1)
+  const visualization = [await playGame(p0,p1)]
 
   res.send({"visualization": JSON.stringify(visualization)});
 
