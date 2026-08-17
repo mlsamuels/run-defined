@@ -179,7 +179,12 @@ export default function ChallengeView(){
     return (
         <div className="App">
             <div className="top-bar">
-                <Link to={"/"}><img className="home-tab-image" src={"/RD.svg"} alt={"hello?"} height={100}></img></Link>
+                <Link to={"/"}>
+                    <picture>
+                        <source className="home-tab-image" srcSet="/RDWhite.svg" media="(prefers-color-scheme: dark)"/>
+                        <img className="home-tab-image" src="/RD.svg" alt={"logo_image"} height={100}></img>
+                    </picture>
+                </Link>
 
                 <div>
                     <button className="button" onClick={testPress}>

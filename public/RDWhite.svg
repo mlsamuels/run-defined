@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 128 128" fill="none">
+<!-- <rect width="128" height="128" fill="#FFFFFF"/> -->
+<mask id="myMask">
+  <rect x="64" width="64" height="128" rx="0" fill="white"/>
+</mask>
+<circle cx="64" cy="64" r="64" fill="white" mask="url(#myMask)"/>
+<polygon points="0,128 64,128 0,64" fill="white" />
+<circle cx="0" cy="32" r="32" fill="white"/>
+</svg>

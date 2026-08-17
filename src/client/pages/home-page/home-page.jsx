@@ -27,10 +27,10 @@ export default function HomePage(){
 
             <div className="home-tabs-container">
                 <div className="home-tabs">
-                    {homeTabComponent("/","","/RD.svg",tabSelected(path)===1)}
-                    {homeTabComponent("/challenges","Challenges","",tabSelected(path)===2)}
-                    {homeTabComponent("/about","About","",tabSelected(path)===3)}
-                    {homeTabComponent("/more","More","",tabSelected(path)===4)}
+                    {homeTabComponent("/","",true,tabSelected(path)===1)}
+                    {homeTabComponent("/challenges","Challenges",false,tabSelected(path)===2)}
+                    {homeTabComponent("/about","About",false,tabSelected(path)===3)}
+                    {homeTabComponent("/more","More",false,tabSelected(path)===4)}
                 </div>
             </div>
 
