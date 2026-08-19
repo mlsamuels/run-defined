@@ -5,7 +5,8 @@ import gameList from "./game-list.js";
 
 const games= gameList();
 
-// Create an interface for input and output
+
+//interface for input and output
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -28,9 +29,9 @@ const printVis = (vis)=>{
     }
 }
 
-// Main async function
+//main async function
 const main = async () => {
-    // Get user input using await
+    //get user input using await
     const gameNum = await askQuestion('What game? ');
 
     const gameClass = games[Number(gameNum)]
@@ -54,9 +55,9 @@ const main = async () => {
     printVis(gameObject.viewGame())
     console.log("Player "+(gameObject.getResults()[1])+" Wins!")
 
-    // Close the readline interface
+    //close the readline interface
     rl.close();
 };
 
-// Call the main async function
+//call the main async function
 await main();

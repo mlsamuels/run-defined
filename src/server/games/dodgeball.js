@@ -1,7 +1,7 @@
 import {Game} from "./game.js";
 
 
-//Game Class for Pythons game
+//Game Class for Dodgeball game
 export class Dodgeball extends Game{
 
     constructor(players) {
