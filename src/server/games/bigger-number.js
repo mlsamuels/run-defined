@@ -69,6 +69,10 @@ export class BiggerNumber extends Game{
     }
 
     static numberToArray(num){
+        if(isNaN(num)){
+            return this.digitToArray(0)
+        }
+
         num=Math.floor(Math.max(num,0))
         //small
         if((num+"").length<=5){
