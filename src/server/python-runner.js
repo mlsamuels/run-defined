@@ -5,14 +5,24 @@ const docker = new Docker();
 //Replaces maincode with replacements and runs code, returning results
 export default async function runCode(scriptCode, mainCode,replacements){
     const mainCodeArgs = stringReplace(mainCode, replacements)
+    const uniqueHash=Math.floor(Math.random() * 0x100000000)
     try {
-        fs.writeFileSync("python_scripts/script.py", scriptCode);
-        fs.writeFileSync("python_scripts/main.py", mainCodeArgs);
+        fs.writeFileSync("python_scripts/script"+uniqueHash+".py", scriptCode);
+        fs.writeFileSync("python_scripts/main"+uniqueHash+".py", mainCodeArgs);
     } catch (err) {
         console.error('Error writing file:', err);
     }
 
-    return await Promise.race([startContainer(), timeOutFunction()])
+    const returnVal= await Promise.race([startContainer(uniqueHash), timeOutFunction()]);
+
+    try {
+        fs.unlinkSync("python_scripts/script"+uniqueHash+".py");
+        fs.unlinkSync("python_scripts/main"+uniqueHash+".py");
+    } catch (err) {
+        console.error('Error writing file:', err);
+    }
+
+    return returnVal;
 }
 
 //Function to race against for timeout, returns error if timeout wins
@@ -34,16 +44,16 @@ function stringReplace(string, replacements){
 }
 
 //Run python code and get results
-//Uses whatever code is in main.py and script.py
-async function startContainer() {
+//Uses whatever code is in the uniqueHash variants of main.py and script.py
+async function startContainer(uniqueHash) {
     try {
         // Create container
         const container = await docker.createContainer({
             Image: 'python:3.12-slim',
             Cmd: ['python','-u' ,'/app/main.py'],
             HostConfig: {
-                Binds: [`${process.cwd()}/python_scripts/script.py:/app/script.py`,
-                    `${process.cwd()}/python_scripts/main.py:/app/main.py`],
+                Binds: [`${process.cwd()}/python_scripts/script${uniqueHash}.py:/app/script.py`,
+                    `${process.cwd()}/python_scripts/main${uniqueHash}.py:/app/main.py`],
                 AutoRemove: false,
                 Tty: false
             }
