@@ -192,11 +192,15 @@ async function playGame(p0, p1){
 
   //compute elo change
   const result = gameInstance.getResults()[1]
-  const eloChange=eloUpdate(p0.elo,p1.elo,result);
 
-  //update elos
-  await db.updateOne({_id:id0},{$set:{elo:p0.elo+eloChange*(1.0-result)-eloChange*result}})
-  await db.updateOne({_id:id1},{$set:{elo:p1.elo+eloChange*result-eloChange*(1.0-result)}})
+  //compute elo change
+  if(id0!==id1) {
+    const eloChange = eloUpdate(p0.elo, p1.elo, result);
+
+    //update elos
+    await db.updateOne({_id: id0}, {$set: {elo: p0.elo + eloChange * (1.0 - result) - eloChange * result}})
+    await db.updateOne({_id: id1}, {$set: {elo: p1.elo + eloChange * result - eloChange * (1.0 - result)}})
+  }
 
   console.log(p0.name+" vs. "+p1.name)
   return [visualization,p0.name,p1.name,result];

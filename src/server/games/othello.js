@@ -18,14 +18,11 @@ export class Othello extends Game{
         this.board[4][3]="0"
         this.board[3][3]="1"
         this.board[4][4]="1"
-
-
     }
 
     isEnded(){
         return this.ended;
     }
-
 
     getResults(){
         const counts=[0,0]
@@ -211,7 +208,6 @@ export class Othello extends Game{
         return pythonCode;
     }
 
-    //Todo
     static getInfo(){
         return {
             "name": "Othello",
