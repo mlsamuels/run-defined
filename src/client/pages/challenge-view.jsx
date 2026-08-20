@@ -17,6 +17,7 @@ export default function ChallengeView(){
     const [gameName, setGameName] = useState("");
     //Text for the description of the current game
     const [descriptionText, setDescriptionText] = useState("");
+    const [playerColors, setPlayerColors] = useState([]);
 
     //The default code in the code editor
     const [defaultCode, setDefaultCode] = useState("");
@@ -128,7 +129,6 @@ export default function ChallengeView(){
                     "p1": simulateNameOne
                 }),
             });
-            console.log(response)
             if (!response.ok) {
                 setSimulateError((await response.json())["error"])
                 throw new Error('Network response was not ok');
@@ -165,6 +165,7 @@ export default function ChallengeView(){
 
             setGameName(result.name);
             setDescriptionText(result.description);
+            setPlayerColors(result.playerColors);
             setLeaderBoardData(result["leaderBoard"])
         } catch (err) {
             console.log(err);
@@ -197,7 +198,7 @@ export default function ChallengeView(){
                 </div>
 
                 <div className="challenge-name">
-                    <h2>Name:</h2>
+                    <h2>Submission Name:&nbsp;</h2>
                     <div>
                         <input defaultValue={localStorage.getItem("name"+gameNum)} onChange={(event)=>{localStorage.setItem("name"+gameNum, event.target.value)}} />
                     </div>
@@ -230,7 +231,7 @@ export default function ChallengeView(){
                         {userError}
                     </div>
                     <ThrobberComponent enabled={throbbing}/>
-                    <GameResultComponent data={visualization}/>
+                    <GameResultComponent data={visualization} playerColors={playerColors} />
                 </div>}
 
                 {tab===3&&
@@ -239,7 +240,7 @@ export default function ChallengeView(){
                             {simulateError}
                         </div>
 
-                        <GameResultComponent data={simulateVisualization}/>
+                        <GameResultComponent data={simulateVisualization} playerColors={playerColors}/>
                         <h3>Player Zero</h3>
                         <input  onChange={(event)=>{setSimulateNameZero(event.target.value)}} />
                         <h3>Player One</h3>

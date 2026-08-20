@@ -285,3 +285,9 @@ th {
 p{
   text-align: left;
 }
+
+.game-result-heading{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

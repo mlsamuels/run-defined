@@ -8,6 +8,8 @@ export default function GameResultComponent(props){
 
     const data=props.data;
 
+    const playerColors = props.playerColors;
+
     if(data.length===0){
         return <div></div>;
     }
@@ -33,7 +35,11 @@ export default function GameResultComponent(props){
     return (
         <div className="game-result">
             {data.length!==1&&<div>game: {gameNum+1}/{data.length}</div>}
-            <div>{data[gameNum][3]===0?"*":""}{data[gameNum][1]} vs. {data[gameNum][3]===1?"*":""}{data[gameNum][2]}</div>
+            <div className="game-result-heading">
+                <div style={{color:playerColors[0]}}>{data[gameNum][3]===0?"*":""}{data[gameNum][1]}</div>
+                <div>&nbsp;vs.&nbsp;</div>
+                <div style={{color:playerColors[1]}}>{data[gameNum][3]===1?"*":""}{data[gameNum][2]}</div>
+            </div>
             <div>page: {pageNum+1}/{data[gameNum][0].length}</div>
             <DotArrayComponent className="game-result"
                 width={data[0][0][0][0].length}

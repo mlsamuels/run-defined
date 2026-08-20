@@ -7,7 +7,6 @@ export class TwentyOne extends Game{
         if(players.length !==2){
             throw new Error("TwentyOne must have 2 players")
         }
-        this.turn=0;
         this.numbers=[21]
     }
 
@@ -37,11 +36,20 @@ export class TwentyOne extends Game{
     }
 
     viewGame(){
+        console.log(this.turn)
         const board= new Array(30).fill(null).map(() => new Array(45).fill("0"));
 
         for(let i = 0;i<this.numbers.at(-1);i++){
             for(let j =10; j < 20;j++){
+
                 board[j][2*i+2]="1"
+            }
+        }
+        if(this.numbers.length>1) {
+            for (let i = this.numbers.at(-1); i < this.numbers.at(-2); i++) {
+                for (let j = 10; j < 20; j++) {
+                    board[j][2 * i + 2] = "P"+(this.numbers.length%2)
+                }
             }
         }
         return board;
@@ -59,7 +67,9 @@ export class TwentyOne extends Game{
         return {"name":"Twenty One Game",
             "description":"In this game, two players will take turns taking 1, 2, or 3 sticks, whoever takes the final stick wins. 'input' is how many sticks are left, return the number you want to take.",
             "defaultCode": defaultCode,
-            "defaultTests": [["21"],["1"],["2"]]}
+            "defaultTests": [["21"],["1"],["2"]],
+            "playerColors":["#0000FF","#FF0000"]
+        }
     }
 
 }
