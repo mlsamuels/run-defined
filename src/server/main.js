@@ -148,7 +148,7 @@ async function playGames(id, count){
     }
     //Closest match
     const p1= searchResult[0];
-    visualizations.push(await playGame(p0,p1))
+    visualizations.push(Math.random()>0.5?await playGame(p0,p1):await playGame(p1,p0))
     const oldElo = p0.elo
     p0 = await db.findOne({_id: id})
     const newElo = p0.elo
