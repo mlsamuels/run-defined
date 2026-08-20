@@ -30,7 +30,7 @@ async function timeOutFunction(){
     return new Promise(resolve=>{
         setTimeout(()=>{
             resolve(["","Error, time limit exceeded"])
-        },5000)
+        },20000)
     })
 }
 
