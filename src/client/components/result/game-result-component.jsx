@@ -16,10 +16,15 @@ export default function GameResultComponent(props){
 
     const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
+
     const buttonClick = (left, gameChange)=>{
         if(gameChange) {
-            setGameNum(clamp(gameNum + (left?-1:1),0,data.length-1))
-            setPageNum(0)
+            const oldGame=gameNum
+            const newGame = clamp(gameNum + (left?-1:1),0,data.length-1)
+            setGameNum(newGame)
+            if(newGame!==oldGame) {
+                setPageNum(0)
+            }
         }
         else{
             setPageNum(clamp(pageNum+(left?-1:1),0,data[gameNum][0].length-1))
