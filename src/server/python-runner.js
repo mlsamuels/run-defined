@@ -58,7 +58,7 @@ async function startContainer(uniqueHash) {
         const timeout = new Promise(resolve => {
             setTimeout(() => {
                 resolve("timeout");
-            }, 5000);
+            }, 10000);
         });
 
         const finished = container.wait();
@@ -66,7 +66,9 @@ async function startContainer(uniqueHash) {
         const result = await Promise.race([finished, timeout])
 
         if(result==="timeout"){
-            await container.kill();
+            if(container){
+                await container.kill();
+            }
             return ["", "Error, time limit exceeded"];
         }
 
