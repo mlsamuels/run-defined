@@ -13,26 +13,18 @@ export default async function runCode(scriptCode, mainCode,replacements){
         console.error('Error writing file:', err);
     }
 
-    const returnVal= await Promise.race([startContainer(uniqueHash), timeOutFunction()]);
+    const returnVal= await startContainer(uniqueHash);
 
     try {
         fs.unlinkSync("python_scripts/script"+uniqueHash+".py");
         fs.unlinkSync("python_scripts/main"+uniqueHash+".py");
     } catch (err) {
-        console.error('Error writing file:', err);
+        console.error('Error deleting file:', err);
     }
 
     return returnVal;
 }
 
-//Function to race against for timeout, returns error if timeout wins
-async function timeOutFunction(){
-    return new Promise(resolve=>{
-        setTimeout(()=>{
-            resolve(["","Error, time limit exceeded"])
-        },20000)
-    })
-}
 
 //Replaces instances of {0}, {1} ... in a string with the elements of replacements
 function stringReplace(string, replacements){
@@ -46,9 +38,10 @@ function stringReplace(string, replacements){
 //Run python code and get results
 //Uses whatever code is in the uniqueHash variants of main.py and script.py
 async function startContainer(uniqueHash) {
+    let container
     try {
         // Create container
-        const container = await docker.createContainer({
+        container = await docker.createContainer({
             Image: 'python:3.12-slim',
             Cmd: ['python','-u' ,'/app/main.py'],
             HostConfig: {
@@ -61,7 +54,21 @@ async function startContainer(uniqueHash) {
 
         //Get python code results
         await container.start();
-        await container.wait();
+
+        const timeout = new Promise(resolve => {
+            setTimeout(() => {
+                resolve("timeout");
+            }, 5000);
+        });
+
+        const finished = container.wait();
+
+        const result = await Promise.race([finished, timeout])
+
+        if(result==="timeout"){
+            await container.kill();
+            return ["", "Error, time limit exceeded"];
+        }
 
         const logs = await container.logs({
             stdout: true,
